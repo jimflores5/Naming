@@ -1,4 +1,6 @@
 import random
+from flask import Flask, request, redirect, render_template, session, flash
+import cgi
 
 PosOneCations = [('Hydrogen','H',1,0), ('Lithium','Li',1,0), ('Sodium','Na',1,0), ('Potassium','K',1,0), ('Rubidium','Rb',1,0), ('Cesium','Cs',1,0), ('Silver','Ag',1,0), ('Copper (I)','Cu',1,0), ('Gold (I)','Au',1,0), ('Gallium (I)','Ga',1,0), ('Indium (I)','In',1,0), ('Ammonium','NH4',1,1)]
 PosTwoCations = [('Beryllium','Be',2,0), ('Magnesium','Mg',2,0), ('Calcium','Ca',2,0), ('Strontium','Sr',2,0), ('Barium','Ba',2,0), ('Chromium (II)','Cr',2,0), ('Manganese (II)','Mn',2,0), ('Iron (II)','Fe',2,0), ('Cobalt (II)','Co',2,0), ('Nickel','Ni',2,0), ('Copper (II)','Cu',2,0), ('Zinc','Zn',2,0), ('Cadmium','Cd',2,0), ('Mercury (II)','Hg',2,0), ('Tin (II)','Sn',2,0), ('Lead (II)','Pb',2,0)]
@@ -11,6 +13,10 @@ PolyatomicAnions = [('nitrate','NO3',-1,1), ('nitrite','NO2',-1,1), ('hydroxide'
 
 cations = PosOneCations+PosTwoCations+PosThreeCations+PosFourCations+MiscCations
 anions = MonatomicAnions+PolyatomicAnions
+
+app = Flask(__name__)
+app.config['DEBUG'] = True
+app.secret_key = 'yrtsimehc'
 
 def chooseCompound():
     cation = random.choice(cations)
@@ -44,20 +50,10 @@ def findSubscripts(cation, anion):
             formula += anion[1]+str(cation[2])
     return formula
 
+@app.route('/')
+def index():
+    session.clear()
+    return render_template('index.html',title="Naming Practice")
 
-for x in range(6):
-    Compound = chooseCompound()
-    if x%2==0:
-        message = "Provide the name for "+Compound[1]+": "
-        answer = input(message)
-        if answer.lower() == Compound[0].lower():
-            print("Correct! :-)")
-        else:
-            print("Sorry, the correct name was:",Compound[0])
-    else:
-        message = "Provide the formula for "+Compound[0]+": "
-        answer = input(message)
-        if answer == Compound[1]:
-            print("Correct! :-)")
-        else:
-            print("Sorry, the correct formula was:",Compound[1])
+if __name__ == '__main__':
+    app.run()
