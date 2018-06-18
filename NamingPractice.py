@@ -50,10 +50,31 @@ def findSubscripts(cation, anion):
             formula += anion[1]+str(cation[2])
     return formula
 
+def checkName(answer,name):
+    #remove spaces from answer and expected name, then compare.
+    #Return boolen as 'result'
+    return result
+
 @app.route('/')
 def index():
     session.clear()
     return render_template('index.html',title="Naming Practice")
+
+@app.route('/namesfromformulas',methods=['POST', 'GET'])
+def namesfromformulas():
+    if request.method == 'POST':
+        answer = request.form['answer']
+        name = request.form['name']
+        formula = request.form['formula']
+        if answer.lower() == name.lower():
+            flash('Correct!  :-)', 'correct')
+        else:
+            flash('Try again, or click here to reveal the answer.', 'error')
+    
+        return render_template('namesfromformulas.html', name = name, formula = formula, answer = answer)
+
+    Compound = chooseCompound()
+    return render_template('namesfromformulas.html',title="Names fron Formulas", name = Compound[0], formula = Compound[1])
 
 if __name__ == '__main__':
     app.run()
