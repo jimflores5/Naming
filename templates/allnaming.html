@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class='wrapper text-center'>
+        <h1><u>{{title}}</u></h1>
+        <br/>
+        {% if question == '0' %}
+            <h2>Provide the name for: <span style="color:blue">
+                {% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}
+                </span></h2></br>
+            {% with messages = get_flashed_messages(with_categories=True) %} 
+            <form action="/allnaming" method="post">
+                <label for "answer" style="font-size: 16pt; color:blue">Name: </label>
+                <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "28"></br>
+                {% for category,message in messages %}
+                    {% if category != 'error' %}
+                        <span class='{{category}}' style="font-size: 14pt">{{message}}</span>
+                    {% else %}
+                        <div class="btn-group dropright">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14pt; color:red">
+                                {{message}}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <p class="dropdown-item" style="font-size: 24pt; color:red">{{name}}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                </br></br>
+                <input name="name" type="hidden" value="{{name}}">
+                <input name="formula" type="hidden" value="{{formula}}">
+                <input name="question" type="hidden" value="{{question}}">
+            </form>
+            {% endwith %}
+        {% else %}
+            <h2>Provide the formula for: <span style="color:blue">{{name}}</span></h2></br>
+            {% with messages = get_flashed_messages(with_categories=True) %} 
+            <form action="/allnaming" method="post">
+                <label for "answer" style="font-size: 16pt; color:blue">Formula: </label>
+                <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "15"></br>
+                {% for category,message in messages %}
+                    {% if category != 'error' %}
+                        <span class='{{category}}' style="font-size: 14pt">{{message}}</span>
+                    {% else %}
+                        <div class="btn-group dropright">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14pt; color:red">
+                                {{message}}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <p class="dropdown-item" style="font-size: 24pt; color:red">{% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                </br></br>
+                <input name="name" type="hidden" value="{{name}}">
+                <input name="formula" type="hidden" value="{{formula}}">
+                <input name="question" type="hidden" value="{{question}}">
+            </form>
+            {% endwith %}
+        {% endif %}
+        <p style="font-size: 16pt; color:purple">(Hit 'Return' or 'Enter' to check your answer)</p>
+        </br>
+        <a class="btn btn-primary" href="allnaming" role="button">Next Question</a>
+        </br></br>
+        <div>
+            <a href='/'>Main Menu</a>
+        </div>
+    </div>
+{% endblock %}    

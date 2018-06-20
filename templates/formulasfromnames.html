@@ -1,16 +1,14 @@
 {% extends "base.html" %}
-
+<!-- Remember this: https://stackoverflow.com/questions/6865081/add-subscript-to-numbers-on-the-fly-as-user-types-using-jquery -->
 {% block content %}
     <div class='wrapper text-center'>
-        <h1><u>Names from Formulas</u></h1>
+        <h1><u>Formulas from Names</u></h1>
         <br/>
-        <h2>Provide the name for: <span style="color:blue">
-            {% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}
-            </span></h2></br>
+        <h2>Provide the formula for: <span style="color:blue">{{name}}</span></h2></br>
         {% with messages = get_flashed_messages(with_categories=True) %} 
-        <form action="/namesfromformulas" method="post">
-            <label for "answer" style="font-size: 16pt; color:blue">Name: </label>
-            <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "28"></br>
+        <form action="/formulasfromnames" method="post">
+            <label for "answer" style="font-size: 16pt; color:blue">Formula: </label>
+            <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "15"></br>
             {% for category,message in messages %}
                 {% if category != 'error' %}
                     <span class='{{category}}' style="font-size: 14pt">{{message}}</span>
@@ -20,7 +18,7 @@
                             {{message}}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <p class="dropdown-item" style="font-size: 24pt; color:red">{{name}}</p>
+                            <p class="dropdown-item" style="font-size: 24pt; color:red">{% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</p>
                         </div>
                     </div>
                 {% endif %}
@@ -32,7 +30,7 @@
         {% endwith %}
         <p style="font-size: 16pt; color:purple">(Hit 'Return' or 'Enter' to check your answer)</p>
         </br>
-        <a class="btn btn-primary" href="namesfromformulas" role="button">Next Practice Formula</a>
+        <a class="btn btn-primary" href="formulasfromnames" role="button">Next Practice Name</a>
         </br></br>
         <div>
             <a href='/'>Main Menu</a>

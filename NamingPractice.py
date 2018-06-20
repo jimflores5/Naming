@@ -13,6 +13,7 @@ PolyatomicAnions = [('nitrate','NO3',-1,1), ('nitrite','NO2',-1,1), ('hydroxide'
 
 cations = PosOneCations+PosTwoCations+PosThreeCations+PosFourCations+MiscCations
 anions = MonatomicAnions+PolyatomicAnions
+digits = ['0','1','2','3','4','5','6','7','8','9']
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -51,8 +52,12 @@ def findSubscripts(cation, anion):
     return formula
 
 def checkName(answer,name):
-    #remove spaces from answer and expected name, then compare.
-    #Return boolen as 'result'
+    answer = answer.replace(' ','')
+    name = name.replace(' ','')
+    if answer.lower() == name.lower():
+        result = True
+    else:
+        result = False
     return result
 
 @app.route('/')
@@ -66,15 +71,51 @@ def namesfromformulas():
         answer = request.form['answer']
         name = request.form['name']
         formula = request.form['formula']
-        if answer.lower() == name.lower():
+        if checkName(answer,name):
             flash('Correct!  :-)', 'correct')
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
     
-        return render_template('namesfromformulas.html', name = name, formula = formula, answer = answer)
+        return render_template('namesfromformulas.html', title="Names fron Formulas", name = name, formula = formula, answer = answer, digits = digits)
 
     Compound = chooseCompound()
-    return render_template('namesfromformulas.html',title="Names fron Formulas", name = Compound[0], formula = Compound[1])
+    return render_template('namesfromformulas.html',title="Names fron Formulas", name = Compound[0], formula = Compound[1], digits = digits)
+
+@app.route('/formulasfromnames',methods=['POST', 'GET'])
+def formulasfromnames():
+    if request.method == 'POST':
+        answer = request.form['answer']
+        name = request.form['name']
+        formula = request.form['formula']
+        if answer == formula:
+            flash('Correct!  :-)', 'correct')
+        else:
+            flash('Try again, or click here to reveal the answer.', 'error')
+    
+        return render_template('formulasfromnames.html', title="Formulas from Names", name = name, formula = formula, answer = answer, digits = digits)
+
+    Compound = chooseCompound()
+    return render_template('formulasfromnames.html',title="Formulas from Names", name = Compound[0], formula = Compound[1], digits = digits)
+
+@app.route('/allnaming',methods=['POST', 'GET'])
+def allnaming():
+    if request.method == 'POST':
+        answer = request.form['answer']
+        name = request.form['name']
+        formula = request.form['formula']
+        question = request.form['question']
+        if question == '0' and checkName(answer,name):
+            flash('Correct!  :-)', 'correct')
+        elif question == '1' and answer == formula:
+            flash('Correct!  :-)', 'correct')
+        else:
+            flash('Try again, or click here to reveal the answer.', 'error')
+    
+        return render_template('allnaming.html', title="Practice All Naming", name = name, formula = formula, answer = answer, digits = digits, question = question)
+
+    Compound = chooseCompound()
+    question = str(random.randint(0,1))
+    return render_template('allnaming.html',title="Practice All Naming", name = Compound[0], formula = Compound[1], digits = digits, question = question)
 
 if __name__ == '__main__':
     app.run()
