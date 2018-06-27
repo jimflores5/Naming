@@ -11,6 +11,9 @@ MonatomicAnions = [('fluoride','F',-1,0), ('chloride','Cl',-1,0), ('bromide','Br
 PolyatomicAnions = [('nitrate','NO3',-1,1), ('nitrite','NO2',-1,1), ('hydroxide','OH',-1,1), ('hypochlorite','ClO',-1,1), ('chlorite','ClO2',-1,1), ('chlorate','ClO3',-1,1), ('perchlorate','ClO4',-1,1), ('permanganate','MnO4',-1,1), ('acetate','C2H3O2',-1,1), ('cyanide','CN',-1,1), ('hydrogen carbonate','HCO3',-1,1), ('hydrogen sulfate','HSO4',-1,1), ('dihydrogen phosphate','H2PO4',-1,1), ('sulfate','SO4',-2,1), ('sulfite','SO3',-2,1), ('carbonate','CO3',-2,1), ('chromate','CrO4',-2,1), ('dichromate','Cr2O7',-2,1), ('hydrogen phospate','HPO4',-2,1), ('oxalate','C2O4',-2,1), ('phosphate','PO4',-3,1), ('phosphite','PO3',-3,1)]
 # Ion tuple order = (Ion name, forumla, charge, monatomic/polyatomic ID 0/1 = No/Yes)
 
+BimolecularCpds = [('Diboron hexachloride','B2Cl6',0), ('Dibromine monoxide','Br2O','Dibromine monooxide'), ('Bromine trifluoride','BrF3',0), ('Dicarbon dihydride','C2H2','Ethyne'), ('Dicarbon tetrahydride','C2H4','Ethene'), ('Dicarbon hexahydride','C2H6','Ethane'), ('Tricarbon tetrahydride','C3H4','Propyne'), ('Tricarbon hexahydride','C3H6','Propene'), ('Tricarbon octahydride','C3H8','Propane'), ('Tetracarbon decahydride','C4H10','Butane'), ('Tetracarbon hexahydride','C4H6','Butyne'), ('Tetracarbon octahydride','C4H8','Butene'), ('Pentacarbon decahydride','C5H10','Pentene'), ('Pentacarbon octahydride','C5H8','Pentyne'), ('Carbon tetrachloride','CCl4',0), ('Carbon tetrahydride','CH4','Methane'), ('Dichlorine monoxide','Cl2O','Dichlorine monooxide'), ('Carbon monoxide','CO','Carbon monooxide'), ('Carbon dioxide','CO2',0), ('Dihydrogen monoxide','H2O','Water'), ('Diiodine tetroxide','I2O4','Diiodine tetraoxide'), ('Diiodine pentoxide','I2O5','Diiodine pentaoxide'), ('Iodine monobromide','IBr',0), ('Dinitrogen monoxide','N2O','Dinitrogen monooxide'), ('Dinitrogen tetroxide','N2O4','Dinitrogen tetraoxide'), ('Nitrogen trihydride','NH3','Ammonia'), ('Nitrogen tribromide','NBr3',0), ('Nitrogen monoxide','NO','Nitrogen monooxide'), ('Nitrogen dioxide','NO2',0), ('Diphosphorous tetrabromide','P2Br4',0), ('Tetraphosphorous decoxide','P4O10','Tetraphosphorous decaoxide'), ('Phosphorous pentachloride','PCl5',0), ('Phosphorous trifluoride','PF3',0), ('Phosphouous trihydride','PH3',0), ('Sulfur difluoride','SF2',0), ('Sulfur hexafluoride','SF6',0), ('Sulfur dioxide','SO2',0), ('Sulfur trioxide','SO3',0)]
+# Molecular tuple order = (Name, forumla, alternate name (0 if none))
+
 cations = PosOneCations+PosTwoCations+PosThreeCations+PosFourCations+MiscCations
 anions = MonatomicAnions+PolyatomicAnions
 digits = ['0','1','2','3','4','5','6','7','8','9']
@@ -20,11 +23,15 @@ app.config['DEBUG'] = True
 app.secret_key = 'yrtsimehc'
 
 def chooseCompound():
-    cation = random.choice(cations)
-    anion = random.choice(anions)
-    name = cation[0] + ' ' + anion[0]
-    formula = findSubscripts(cation,anion)
-    compound = (name, formula)
+    if random.randint(0,6) == 0:
+        choice = random.choice(BimolecularCpds)
+        compound = (choice[0],choice[1])
+    else:
+        cation = random.choice(cations)
+        anion = random.choice(anions)
+        name = cation[0] + ' ' + anion[0]
+        formula = findSubscripts(cation,anion)
+        compound = (name, formula)
     return compound
 
 def findSubscripts(cation, anion):
@@ -52,12 +59,29 @@ def findSubscripts(cation, anion):
     return formula
 
 def checkName(answer,name):
-    answer = answer.replace(' ','')
-    name = name.replace(' ','')
-    if answer.lower() == name.lower():
-        result = True
+    if any(name in code for code in BimolecularCpds):
+        index = [x for x, y in enumerate(BimolecularCpds) if y[0] == name]
+        choice = BimolecularCpds[index[0]]
+        name = name.replace(' ','')
+        answer = answer.replace(' ','')
+        if choice[2] != 0:
+            altname = choice[2].replace(' ','')
+            if answer.lower() == name.lower() or answer.lower() == altname.lower():
+                result = True
+            else:
+                result = False
+        else:
+            if answer.lower() == name.lower():
+                result = True
+            else:
+                result = False
     else:
-        result = False
+        answer = answer.replace(' ','')
+        name = name.replace(' ','')
+        if answer.lower() == name.lower():
+            result = True
+        else:
+            result = False
     return result
 
 @app.route('/')
