@@ -22,16 +22,26 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 app.secret_key = 'yrtsimehc'
 
-def chooseCompound():
-    if random.randint(0,6) == 0:
+def chooseCompound(type='all'):
+    if type == 'molecular':
         choice = random.choice(BimolecularCpds)
         compound = (choice[0],choice[1])
-    else:
+    elif type == 'ionic':
         cation = random.choice(cations)
         anion = random.choice(anions)
         name = cation[0] + ' ' + anion[0]
         formula = findSubscripts(cation,anion)
         compound = (name, formula)
+    else:
+        if random.randint(0,5) == 0:
+            choice = random.choice(BimolecularCpds)
+            compound = (choice[0],choice[1])
+        else:
+            cation = random.choice(cations)
+            anion = random.choice(anions)
+            name = cation[0] + ' ' + anion[0]
+            formula = findSubscripts(cation,anion)
+            compound = (name, formula)
     return compound
 
 def findSubscripts(cation, anion):
@@ -89,8 +99,8 @@ def index():
     session.clear()
     return render_template('index.html',title="Naming Practice")
 
-@app.route('/namesfromformulas',methods=['POST', 'GET'])
-def namesfromformulas():
+@app.route('/namesfromformulas/<type>',methods=['POST', 'GET'])
+def namesfromformulas(type):
     if request.method == 'POST':
         answer = request.form['answer']
         name = request.form['name']
@@ -100,13 +110,13 @@ def namesfromformulas():
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
     
-        return render_template('namesfromformulas.html', title="Names fron Formulas", name = name, formula = formula, answer = answer, digits = digits)
+        return render_template('namesfromformulas.html', title="Names fron Formulas", name = name, formula = formula, answer = answer, digits = digits, type = type)
 
-    Compound = chooseCompound()
-    return render_template('namesfromformulas.html',title="Names fron Formulas", name = Compound[0], formula = Compound[1], digits = digits)
+    Compound = chooseCompound(type)
+    return render_template('namesfromformulas.html',title="Names fron Formulas", name = Compound[0], formula = Compound[1], digits = digits, type = type)
 
-@app.route('/formulasfromnames',methods=['POST', 'GET'])
-def formulasfromnames():
+@app.route('/formulasfromnames/<type>',methods=['POST', 'GET'])
+def formulasfromnames(type):
     if request.method == 'POST':
         answer = request.form['answer']
         name = request.form['name']
@@ -116,10 +126,10 @@ def formulasfromnames():
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
     
-        return render_template('formulasfromnames.html', title="Formulas from Names", name = name, formula = formula, answer = answer, digits = digits)
+        return render_template('formulasfromnames.html', title="Formulas from Names", name = name, formula = formula, answer = answer, digits = digits, type = type)
 
-    Compound = chooseCompound()
-    return render_template('formulasfromnames.html',title="Formulas from Names", name = Compound[0], formula = Compound[1], digits = digits)
+    Compound = chooseCompound(type)
+    return render_template('formulasfromnames.html',title="Formulas from Names", name = Compound[0], formula = Compound[1], digits = digits, type = type)
 
 @app.route('/allnaming',methods=['POST', 'GET'])
 def allnaming():

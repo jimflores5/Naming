@@ -6,7 +6,7 @@
         <br/>
         <h2>Provide the formula for: <span style="color:blue">{{name}}</span></h2></br>
         {% with messages = get_flashed_messages(with_categories=True) %} 
-        <form action="/formulasfromnames" method="post">
+        <form action="/formulasfromnames/{{type}}" method="post">
             <label for "answer" style="font-size: 16pt; color:blue">Formula: </label>
             <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "15"></br>
             {% for category,message in messages %}
@@ -26,11 +26,11 @@
             </br></br>
             <input name="name" type="hidden" value="{{name}}">
             <input name="formula" type="hidden" value="{{formula}}">
+            <input class="btn btn-success" type="submit" value="Check Answer">
         </form>
         {% endwith %}
-        <p style="font-size: 16pt; color:purple">(Hit 'Return' or 'Enter' to check your answer)</p>
         </br>
-        <a class="btn btn-primary" href="formulasfromnames" role="button">Next Practice Name</a>
+        <a class="btn btn-primary" href="{{type}}" role="button">Next Practice Name</a>
         </br></br>
         <div>
             <a href='/'>Main Menu</a>
