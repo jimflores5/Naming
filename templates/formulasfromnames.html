@@ -23,17 +23,16 @@
                     </div>
                 {% endif %}
             {% endfor %}
-            </br></br>
+            </br>
             <input name="name" type="hidden" value="{{name}}">
             <input name="formula" type="hidden" value="{{formula}}">
-            <input class="btn btn-success" type="submit" value="Check Answer">
         </form>
         {% endwith %}
-        </br>
-        <a class="btn btn-primary" href="{{type}}" role="button">Next Practice Name</a>
-        </br></br>
+        <p style="font-size: 16pt; color:purple">(Hit 'Return' or 'Enter' to check your answer)</p>
         <div>
-            <a href='/'>Main Menu</a>
+            <a class="btn btn-primary" href="{{type}}" role="button">Next Practice Name</a>
+            <a class="btn btn-danger" href='/' role="button">Main Menu</a>
         </div>
+        <hr>
     </div>
 {% endblock %}    

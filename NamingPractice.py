@@ -86,6 +86,9 @@ def checkName(answer,name):
             else:
                 result = False
     else:
+        if 'bicarbonate' in answer.lower() or 'bisulfate' in answer.lower():
+            answer = answer.lower()
+            answer = answer.replace('bi','hydrogen ')
         answer = answer.replace(' ','')
         name = name.replace(' ','')
         if answer.lower() == name.lower():

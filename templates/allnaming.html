@@ -52,7 +52,7 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-                </br></br>
+                </br>
                 <input name="name" type="hidden" value="{{name}}">
                 <input name="formula" type="hidden" value="{{formula}}">
                 <input name="question" type="hidden" value="{{question}}">
@@ -60,11 +60,38 @@
             {% endwith %}
         {% endif %}
         <p style="font-size: 16pt; color:purple">(Hit 'Return' or 'Enter' to check your answer)</p>
-        </br>
-        <a class="btn btn-primary" href="allnaming" role="button">Next Question</a>
-        </br></br>
         <div>
-            <a href='/'>Main Menu</a>
+            <a class="btn btn-primary" href="allnaming" role="button">Next Question</a>   
+            <a class="btn btn-danger" href='/' role="button">Main Menu</a>
+        </div>
+        <hr>
+    </div>
+    <div class="wrapper text-center">
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseIons" aria-expanded="false" aria-controls="collapseExample">
+                    Polyatomic Ion List
+                </button>
+                <div class="collapse" id="collapseIons">
+                    <div class="card card-body">
+                        <figure class="figure">
+                            <img src="{{url_for('static', filename='IonList.png')}}" class="figure-img img-fluid">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapsePrefixes" aria-expanded="false" aria-controls="collapseExample">
+                    Prefix List
+                </button>
+                <div class="collapse" id="collapsePrefixes">
+                    <div class="card card-body">
+                        <figure class="figure">
+                            <img src="{{url_for('static', filename='Prefixes.png')}}" class="figure-img img-fluid" style="width:80%; height:100%">
+                        </figure>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}    
