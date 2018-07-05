@@ -1,10 +1,11 @@
 import random
 from flask import Flask, request, redirect, render_template, session, flash
 import cgi
+from decimal import Decimal
 
 PosOneCations = [('Hydrogen','H',1,0), ('Lithium','Li',1,0), ('Sodium','Na',1,0), ('Potassium','K',1,0), ('Rubidium','Rb',1,0), ('Cesium','Cs',1,0), ('Silver','Ag',1,0), ('Copper (I)','Cu',1,0), ('Gold (I)','Au',1,0), ('Gallium (I)','Ga',1,0), ('Indium (I)','In',1,0), ('Ammonium','NH4',1,1)]
 PosTwoCations = [('Beryllium','Be',2,0), ('Magnesium','Mg',2,0), ('Calcium','Ca',2,0), ('Strontium','Sr',2,0), ('Barium','Ba',2,0), ('Chromium (II)','Cr',2,0), ('Manganese (II)','Mn',2,0), ('Iron (II)','Fe',2,0), ('Cobalt (II)','Co',2,0), ('Nickel','Ni',2,0), ('Copper (II)','Cu',2,0), ('Zinc','Zn',2,0), ('Cadmium','Cd',2,0), ('Mercury (II)','Hg',2,0), ('Tin (II)','Sn',2,0), ('Lead (II)','Pb',2,0)]
-PosThreeCations = [('Scandium','Sc',3,0), ('Titanium (III)','Ti',3,0), ('Vanadium (III)','V',3,0), ('Chromium (III)','Cr',3,0), ('Iron (III)','Fe',3,0), ('Cobalt (III)','Co',3,0), ('Galium (III)','Ga',3,0), ('Indium (III)','In',3,0), ('Yttrium','Y',3,0), ('Rhodium (III)','Rh',3,0), ('Gold (III)','Au',3,0), ('Aluminum','Al',3,0)]
+PosThreeCations = [('Scandium','Sc',3,0), ('Titanium (III)','Ti',3,0), ('Vanadium (III)','V',3,0), ('Chromium (III)','Cr',3,0), ('Iron (III)','Fe',3,0), ('Cobalt (III)','Co',3,0), ('Gallium (III)','Ga',3,0), ('Indium (III)','In',3,0), ('Yttrium','Y',3,0), ('Rhodium (III)','Rh',3,0), ('Gold (III)','Au',3,0), ('Aluminum','Al',3,0)]
 PosFourCations = [('Tin (IV)','Sn',4,0), ('Lead (IV)','Pb',4,0), ('Titanium (IV)','Ti',4,0), ('Vanadium (IV)','V',4,0), ('Manganese (IV)','Mn',4,0), ('Rhodium (IV)','Rh',4,0), ('Tungsten (IV)','W',4,0), ('Osmium (IV)','Os',4,0)]
 MiscCations = [('Vanadium (V)','V',5,0), ('Tungsten (V)','W',5,0), ('Chromium (VI)','Cr',6,0), ('Tungsten (VI)','W',6,0)]
 MonatomicAnions = [('fluoride','F',-1,0), ('chloride','Cl',-1,0), ('bromide','Br',-1,0), ('iodide','I',-1,0), ('oxide','O',-2,0), ('sulfide','S',-2,0), ('selenide','Se',-2,0), ('nitride','N',-3,0), ('phosphide','P',-3,0)]
@@ -25,7 +26,7 @@ app.secret_key = 'yrtsimehc'
 def chooseCompound(type='all'):
     if type == 'molecular':
         choice = random.choice(BimolecularCpds)
-        compound = (choice[0],choice[1])
+        compound = (choice[0],choice[1]) #compound = (name, formula)
     elif type == 'ionic':
         cation = random.choice(cations)
         anion = random.choice(anions)
@@ -33,10 +34,10 @@ def chooseCompound(type='all'):
         formula = findSubscripts(cation,anion)
         compound = (name, formula)
     else:
-        if random.randint(0,5) == 0:
+        if random.randint(0,5) == 0:   #20% change to select a bimolecular compound.
             choice = random.choice(BimolecularCpds)
             compound = (choice[0],choice[1])
-        else:
+        else:                           #80% change to select an ionic compound.
             cation = random.choice(cations)
             anion = random.choice(anions)
             name = cation[0] + ' ' + anion[0]
@@ -44,7 +45,7 @@ def chooseCompound(type='all'):
             compound = (name, formula)
     return compound
 
-def findSubscripts(cation, anion):
+def findSubscripts(cation, anion):  #Idenfity the formula for an ionic compound.  Add '()' around polyatomic ions, if needed.
     if cation[2] == -anion[2]:
         formula = cation[1]+anion[1]
     elif cation[2] < -anion[2] and -anion[2]%cation[2]==0:
@@ -69,7 +70,7 @@ def findSubscripts(cation, anion):
     return formula
 
 def checkName(answer,name):
-    if any(name in code for code in BimolecularCpds):
+    if any(name in code for code in BimolecularCpds):  #If the compound is molecular, check for alternate names.
         index = [x for x, y in enumerate(BimolecularCpds) if y[0] == name]
         choice = BimolecularCpds[index[0]]
         name = name.replace(' ','')
@@ -86,7 +87,7 @@ def checkName(answer,name):
             else:
                 result = False
     else:
-        if 'bicarbonate' in answer.lower() or 'bisulfate' in answer.lower():
+        if 'bicarbonate' in answer.lower() or 'bisulfate' in answer.lower():    #Correct for alterante names for HCO3- and HSO4-.
             answer = answer.lower()
             answer = answer.replace('bi','hydrogen ')
         answer = answer.replace(' ','')
@@ -100,59 +101,112 @@ def checkName(answer,name):
 @app.route('/')
 def index():
     session.clear()
+    nameAttempts = 0
+    nameCorrect = 0
+    formAttempts = 0
+    formCorrect = 0
+    session['nameAttempts'] = nameAttempts
+    session['nameCorrect'] = nameCorrect
+    session['formAttempts'] = formAttempts
+    session['formCorrect'] = formCorrect
     return render_template('index.html',title="Naming Practice")
 
 @app.route('/namesfromformulas/<type>',methods=['POST', 'GET'])
 def namesfromformulas(type):
     if request.method == 'POST':
+        nameAttempts = session.get('nameAttempts', None)
+        nameCorrect = session.get('nameCorrect', None)
         answer = request.form['answer']
         name = request.form['name']
         formula = request.form['formula']
+        firstAttempt = request.form['firstAttempt']
         if checkName(answer,name):
             flash('Correct!  :-)', 'correct')
+            if firstAttempt == 'True':
+                nameCorrect += 1
+                session['nameCorrect'] = nameCorrect
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
-    
-        return render_template('namesfromformulas.html', title="Names fron Formulas", name = name, formula = formula, answer = answer, digits = digits, type = type)
 
+        ratioCorrect = round(Decimal(nameCorrect/nameAttempts*100),1)
+        return render_template('namesfromformulas.html', title="Names fron Formulas", name = name, formula = formula, answer = answer, digits = digits, type = type, nameAttempts = nameAttempts, nameCorrect = nameCorrect, firstAttempt = False, ratioCorrect = ratioCorrect)
+    
+    nameAttempts = session.get('nameAttempts', None) + 1
+    nameCorrect = session.get('nameCorrect', None)
+    session['nameAttempts'] = nameAttempts
+    ratioCorrect = round(Decimal(nameCorrect/nameAttempts*100),1)
     Compound = chooseCompound(type)
-    return render_template('namesfromformulas.html',title="Names fron Formulas", name = Compound[0], formula = Compound[1], digits = digits, type = type)
+    return render_template('namesfromformulas.html',title="Names fron Formulas", name = Compound[0], formula = Compound[1], digits = digits, type = type, nameAttempts = nameAttempts, nameCorrect = nameCorrect, firstAttempt = True, ratioCorrect = ratioCorrect)
 
 @app.route('/formulasfromnames/<type>',methods=['POST', 'GET'])
 def formulasfromnames(type):
     if request.method == 'POST':
+        formAttempts = session.get('formAttempts', None)
+        formCorrect = session.get('formCorrect', None)
+        firstAttempt = request.form['firstAttempt']
         answer = request.form['answer']
         name = request.form['name']
         formula = request.form['formula']
         if answer == formula:
             flash('Correct!  :-)', 'correct')
+            if firstAttempt == 'True':
+                formCorrect += 1
+                session['formCorrect'] = formCorrect
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
-    
-        return render_template('formulasfromnames.html', title="Formulas from Names", name = name, formula = formula, answer = answer, digits = digits, type = type)
 
+        ratioCorrect = round(Decimal(formCorrect/formAttempts*100),1)
+        return render_template('formulasfromnames.html', title="Formulas from Names", name = name, formula = formula, answer = answer, digits = digits, type = type, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = False, ratioCorrect = ratioCorrect)
+
+    formAttempts = session.get('formAttempts', None) + 1
+    formCorrect = session.get('formCorrect', None)
+    session['formAttempts'] = formAttempts
+    ratioCorrect = round(Decimal(formCorrect/formAttempts*100),1)
     Compound = chooseCompound(type)
-    return render_template('formulasfromnames.html',title="Formulas from Names", name = Compound[0], formula = Compound[1], digits = digits, type = type)
+    return render_template('formulasfromnames.html',title="Formulas from Names", name = Compound[0], formula = Compound[1], digits = digits, type = type, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = True, ratioCorrect = ratioCorrect)
 
 @app.route('/allnaming',methods=['POST', 'GET'])
 def allnaming():
     if request.method == 'POST':
+        nameAttempts = session.get('nameAttempts', None)
+        nameCorrect = session.get('nameCorrect', None)
+        formAttempts = session.get('formAttempts', None)
+        formCorrect = session.get('formCorrect', None)
+        firstAttempt = request.form['firstAttempt']
         answer = request.form['answer']
         name = request.form['name']
         formula = request.form['formula']
         question = request.form['question']
         if question == '0' and checkName(answer,name):
             flash('Correct!  :-)', 'correct')
+            if firstAttempt == 'True':
+                nameCorrect += 1
+                session['nameCorrect'] = nameCorrect
         elif question == '1' and answer == formula:
             flash('Correct!  :-)', 'correct')
+            if firstAttempt == 'True':
+                formCorrect += 1
+                session['formCorrect'] = formCorrect
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
     
-        return render_template('allnaming.html', title="Practice All Naming", name = name, formula = formula, answer = answer, digits = digits, question = question)
+        return render_template('allnaming.html', title="Practice All Naming", name = name, formula = formula, answer = answer, digits = digits, question = question, nameAttempts = nameAttempts, nameCorrect = nameCorrect, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = False)
 
     Compound = chooseCompound()
     question = str(random.randint(0,1))
-    return render_template('allnaming.html',title="Practice All Naming", name = Compound[0], formula = Compound[1], digits = digits, question = question)
+    nameCorrect = session.get('nameCorrect', None)
+    formCorrect = session.get('formCorrect', None)
+    nameAttempts = session.get('nameAttempts', None)
+    formAttempts = session.get('formAttempts', None)
+    if question == '0':
+        nameAttempts = session.get('nameAttempts', None) + 1
+        session['nameAttempts'] = nameAttempts
+        session['formAttempts'] = formAttempts
+    else:
+        formAttempts = session.get('formAttempts', None) + 1
+        session['formAttempts'] = formAttempts
+        session['nameAttempts'] = nameAttempts
+    return render_template('allnaming.html',title="Practice All Naming", name = Compound[0], formula = Compound[1], digits = digits, question = question, nameAttempts = nameAttempts, nameCorrect = nameCorrect, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = True)
 
 if __name__ == '__main__':
     app.run()

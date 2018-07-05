@@ -26,12 +26,17 @@
             </br>
             <input name="name" type="hidden" value="{{name}}">
             <input name="formula" type="hidden" value="{{formula}}">
+            <input name="firstAttempt" type="hidden" value="{{firstAttempt}}">
         </form>
         {% endwith %}
         <p style="font-size: 16pt; color:purple">(Hit 'Return' or 'Enter' to check your answer)</p>
         <div>
             <a class="btn btn-primary" href="{{type}}" role="button">Next Practice Name</a>
             <a class="btn btn-danger" href='/' role="button">Main Menu</a>
+        </div>
+        <hr>
+        <div>
+            Percent Correct = {{formCorrect}}/{{formAttempts}} = {{ratioCorrect}}%
         </div>
         <hr>
     </div>
