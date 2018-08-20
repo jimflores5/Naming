@@ -1,0 +1,52 @@
+{% extends "ionicnamingbase.html" %}
+
+{% block content %}
+    <div class='wrapper text-left'>
+        {% if page == 1 %}
+            <h2><u>First, the basics</u>:</h2>
+            <form action="/ionicnamingtutorial/{{page}}" method="post">
+                <ul style="font-size:1.7vw">
+                    <li>An ionic comound is a combination of a positivly charged ion (a cation) and a negatively charnged ion (an anion).</li>
+                    {% if displayText > 1 %}
+                        <li>The total positive charge from the cations must equal the total negative charge from the anions.</li>
+                    {% endif %}
+                    {% if displayText > 2 %}
+                        <li>To write the name for a given chemical formula, you must be able to:</li>
+                        <ul>
+                            <li>Identify if an element is a metal or a nonmetal.</li>
+                    {% endif %}
+                    {% if displayText > 3 %}
+                        <li>Distinguish between monatomic and polyatomic ions (and be able to name each).</li>
+                    {% endif %}
+                    </ul>
+                </ul>
+                {% if displayText >= 2 %}
+                    <a class="btn btn-danger" href="/" role="button">How Do I Do This?</a>
+                    <input class="btn btn-success" type="submit" value="Got it!">
+                {% else %}
+                    <input class="btn btn-danger" type="submit" value="Next">
+                {% endif %}
+                <input name="page" type="hidden" value="{{page}}">
+                <input name="displayText" type="hidden" value="{{displayText}}">
+            </form>
+        {% elif page == 2 %}
+            <h2><u>Steps to follow</u>:</h2>
+            <form action="/ionicnamingtutorial/{{page}}" method="post">
+                {% if displayText == 1 %}
+
+                {% endif %}
+                <input name="page" type="hidden" value="{{page}}">
+                <input class="btn-sm btn-danger" type="submit" value="Next">
+            </form>
+        {% else %}
+            <h2><u>Using Roman Numerals</u>:</h2>
+            <form action="/ionicnamingtutorial/{{page}}" method="post">
+                {% if displayText == 1 %}
+
+                {% endif %}
+                <input name="page" type="hidden" value="{{page}}">
+                <input class="btn-sm btn-danger" type="submit" value="Next">
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}   

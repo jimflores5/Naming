@@ -208,5 +208,17 @@ def allnaming():
         session['nameAttempts'] = nameAttempts
     return render_template('allnaming.html',title="Practice All Naming", name = Compound[0], formula = Compound[1], digits = digits, question = question, nameAttempts = nameAttempts, nameCorrect = nameCorrect, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = True)
 
+@app.route('/ionicnamingtutorial/<type>',methods=['POST', 'GET'])
+def ionicnamingtutorial(type):
+    if request.method == 'POST':
+        page = int(request.form['page'])
+        displayText = int(request.form['displayText'])+1
+        return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText)
+    
+    displayText = 1
+    page = int(type)
+    return render_template('ionicnamingtutorial.html',title="Naming Ionic Compounds", page = page, displayText = displayText)
+
+
 if __name__ == '__main__':
     app.run()
