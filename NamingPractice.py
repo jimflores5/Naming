@@ -219,6 +219,19 @@ def ionicnamingtutorial(type):
     page = int(type)
     return render_template('ionicnamingtutorial.html',title="Naming Ionic Compounds", page = page, displayText = displayText)
 
+@app.route('/IDthemetals',methods=['POST', 'GET'])
+def IDthemetals():
+    if request.method == 'POST':
+        page = int(request.form['page'])
+        displayImage = int(request.form['displayImage'])+1
+        if displayImage <= 2:
+            return render_template('idthemetals.html', title="Naming Ionic Compounds", page = page, displayImage = displayImage)
+        else:
+            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = 3)
+    
+    displayImage = 1
+    page = 1
+    return render_template('idthemetals.html',title="Naming Ionic Compounds", page = page, displayImage = displayImage)
 
 if __name__ == '__main__':
     app.run()

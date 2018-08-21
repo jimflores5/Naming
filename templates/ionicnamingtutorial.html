@@ -4,31 +4,49 @@
     <div class='wrapper text-left'>
         {% if page == 1 %}
             <h2><u>First, the basics</u>:</h2>
-            <form action="/ionicnamingtutorial/{{page}}" method="post">
-                <ul style="font-size:1.7vw">
-                    <li>An ionic comound is a combination of a positivly charged ion (a cation) and a negatively charnged ion (an anion).</li>
-                    {% if displayText > 1 %}
-                        <li>The total positive charge from the cations must equal the total negative charge from the anions.</li>
-                    {% endif %}
-                    {% if displayText > 2 %}
-                        <li>To write the name for a given chemical formula, you must be able to:</li>
-                        <ul>
-                            <li>Identify if an element is a metal or a nonmetal.</li>
-                    {% endif %}
-                    {% if displayText > 3 %}
-                        <li>Distinguish between monatomic and polyatomic ions (and be able to name each).</li>
-                    {% endif %}
-                    </ul>
-                </ul>
-                {% if displayText >= 2 %}
-                    <a class="btn btn-danger" href="/" role="button">How Do I Do This?</a>
-                    <input class="btn btn-success" type="submit" value="Got it!">
-                {% else %}
-                    <input class="btn btn-danger" type="submit" value="Next">
-                {% endif %}
-                <input name="page" type="hidden" value="{{page}}">
-                <input name="displayText" type="hidden" value="{{displayText}}">
-            </form>
+            <div class="container-fluid justify-content-between">
+                <div class="row">
+                    <div class="col-7">
+                        <form action="/ionicnamingtutorial/{{page}}" method="post">
+                            <ul style="font-size:1.7vw">
+                                <li>An ionic comound is a combination of a positivly charged ion (a <span style="color:blue">cation</span>) and a negatively charged ion (an <span style="color:red">anion</span>).</li>
+                                {% if displayText > 1 %}
+                                    <li style="color:purple">The total positive charge from the cations must equal the total negative charge from the anions.</li>
+                                {% endif %}
+                                {% if displayText > 2 %}
+                                    <li>To write the name for a given chemical formula, you must be able to:</li>
+                                    <ul>
+                                        <li style="color:green">Identify if an element is a metal or a nonmetal.</li>
+                                {% endif %}
+                                {% if displayText > 3 %}
+                                    <li style="color:brown">Distinguish between monatomic and polyatomic ions (and be able to name each).</li>
+                                {% endif %}
+                                </ul>
+                            </ul>
+                            {% if displayText <= 2 %}
+                                <input class="btn btn-danger" type="submit" value="Next">
+                            {% elif displayText == 3 %}
+                                <a class="btn btn-danger" href="/IDthemetals" role="button">How Do I Do This?</a>
+                                <input class="btn btn-success" type="submit" value="Got it!">
+                            {% else %}
+                                <a class="btn btn-danger" href="/" role="button">How Do I Do This?</a>
+                                <a class="btn btn-success" href="/ionicnamingtutorial/{{page+1}}" role="button">Got it!</a>
+                            {% endif %}
+                            <input name="page" type="hidden" value="{{page}}">
+                            <input name="displayText" type="hidden" value="{{displayText}}">
+                        </form>
+                    </div>
+                    <div class="col-5">
+                        <figure class="figure">
+                            {% if displayText == 1 %}
+                                <img src="{{url_for('static', filename='IonicBasics1.png')}}" class="figure-img img-fluid">
+                            {% else %}
+                                <img src="{{url_for('static', filename='IonicBasics2.png')}}" class="figure-img img-fluid">
+                            {% endif %}
+                        </figure>
+                    </div>
+                </div>
+
         {% elif page == 2 %}
             <h2><u>Steps to follow</u>:</h2>
             <form action="/ionicnamingtutorial/{{page}}" method="post">
