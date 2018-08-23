@@ -3,7 +3,7 @@
 {% block content %}
     <div class='wrapper text-left'>
         {% if page == 1 %}
-            <h2><u>First, the basics</u>:</h2>
+            <h2 class="ml-1"><u>First, the basics</u>:</h2>
             <div class="container-fluid justify-content-between">
                 <div class="row">
                     <div class="col-7">
@@ -19,12 +19,12 @@
                                         <li style="color:green">Identify if an element is a metal or a nonmetal.</li>
                                 {% endif %}
                                 {% if displayText > 3 %}
-                                    <li style="color:brown">Distinguish between monatomic and polyatomic ions (and be able to name each).</li>
+                                    <li style="color:brown">Distinguish between monatomic and polyatomic ions.</li>
                                 {% endif %}
                                 </ul>
                             </ul>
-                            {% if displayText <= 2 %}
-                                <input class="btn btn-danger" type="submit" value="Next">
+                            {% if displayText <=2 %}
+                                <input class="btn btn-danger" type="submit" value="More...">
                             {% elif displayText == 3 %}
                                 <a class="btn btn-danger" href="/IDthemetals" role="button">How Do I Do This?</a>
                                 <input class="btn btn-success" type="submit" value="Got it!">
@@ -40,15 +40,116 @@
                         <figure class="figure">
                             {% if displayText == 1 %}
                                 <img src="{{url_for('static', filename='IonicBasics1.png')}}" class="figure-img img-fluid">
-                            {% else %}
+                            {% elif displayText <= 3 %}
                                 <img src="{{url_for('static', filename='IonicBasics2.png')}}" class="figure-img img-fluid">
+                            {% elif displayText == 4 %}
+                                <img src="{{url_for('static', filename='IonicBasics3.png')}}" class="figure-img img-fluid">
                             {% endif %}
                         </figure>
                     </div>
                 </div>
 
         {% elif page == 2 %}
-            <h2><u>Steps to follow</u>:</h2>
+            <h2 class="ml-1"><u>How to name ions</u>:</h2>
+            <form action="/ionicnamingtutorial/{{page}}" method="post">
+                {% if displayText == 1 %}
+                    <div class="container-fluid justify-content-between">
+                        <div class="row justify-content-center">
+                            <div class="col-5">
+                                <div id="accordion">
+                                    <div class="card">
+                                        <div class="card-header p-1" id="headingOne">
+                                            <h3 class="card-link mb-0 text-center" style="color:blue" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> 
+                                                Naming cations (Click to view)
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                                                <div class="card-body">
+                                                    <figure class = "figure">
+                                                        <img src="{{url_for('static', filename='NamingCations.png')}}" class="figure-img img-fluid">
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div id="accordion">
+                                    <div class="card">
+                                        <div class="card-header p-1" id="headingTwo">
+                                            <h3 class="mb-0 text-center collapsed card-link" style="color:red" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> 
+                                                Naming monatomic anions (Click to view)
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <figure class = "figure">
+                                                        <img src="{{url_for('static', filename='MonatomicAnions.png')}}" class="figure-img img-fluid">
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </br>
+                        <div class="row justify-content-center">
+                            <div class="col-5">
+                                <div id="accordion">
+                                    <div class="card">
+                                        <div class="card-header p-1" id="headingThree">
+                                            <h3 class="mb-0 text-center" style="color:purple" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree"> 
+                                                Naming polyatomic anions (Click to view)
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <figure class = "figure">
+                                                        <img src="{{url_for('static', filename='PolyatomicAnions.png')}}" class="figure-img img-fluid">
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div id="accordion">
+                                    <div class="card">
+                                        <div class="card-header p-1" id="headingFour">
+                                            <h3 class="mb-0 text-center" style="color:brown" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour"> 
+                                                Polyatomic Ion List (Click to view)
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <figure class = "figure">
+                                                        <img src="{{url_for('static', filename='IonList.png')}}" class="figure-img img-fluid">
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <h2>Rutabagas!</h2>
+                {% endif %}
+                <div class='wrapper text-center'>
+                    <input name="page" type="hidden" value="{{page}}">
+                    <input name="displayText" type="hidden" value="{{displayText}}">
+                </div>
+            </form>
+        {% elif page == 3 %}
+            <h2><u>Steps for naming ionic compounds</u>:</h2>
             <form action="/ionicnamingtutorial/{{page}}" method="post">
                 {% if displayText == 1 %}
 
