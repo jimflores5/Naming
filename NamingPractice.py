@@ -9,7 +9,7 @@ PosThreeCations = [('Scandium','Sc',3,0), ('Titanium (III)','Ti',3,0), ('Vanadiu
 PosFourCations = [('Tin (IV)','Sn',4,0), ('Lead (IV)','Pb',4,0), ('Titanium (IV)','Ti',4,0), ('Vanadium (IV)','V',4,0), ('Manganese (IV)','Mn',4,0), ('Rhodium (IV)','Rh',4,0), ('Tungsten (IV)','W',4,0), ('Osmium (IV)','Os',4,0)]
 MiscCations = [('Vanadium (V)','V',5,0), ('Tungsten (V)','W',5,0), ('Chromium (VI)','Cr',6,0), ('Tungsten (VI)','W',6,0)]
 MonatomicAnions = [('fluoride','F',-1,0), ('chloride','Cl',-1,0), ('bromide','Br',-1,0), ('iodide','I',-1,0), ('oxide','O',-2,0), ('sulfide','S',-2,0), ('selenide','Se',-2,0), ('nitride','N',-3,0), ('phosphide','P',-3,0)]
-PolyatomicAnions = [('nitrate','NO3',-1,1), ('nitrite','NO2',-1,1), ('hydroxide','OH',-1,1), ('hypochlorite','ClO',-1,1), ('chlorite','ClO2',-1,1), ('chlorate','ClO3',-1,1), ('perchlorate','ClO4',-1,1), ('permanganate','MnO4',-1,1), ('acetate','C2H3O2',-1,1), ('cyanide','CN',-1,1), ('hydrogen carbonate','HCO3',-1,1), ('hydrogen sulfate','HSO4',-1,1), ('dihydrogen phosphate','H2PO4',-1,1), ('sulfate','SO4',-2,1), ('sulfite','SO3',-2,1), ('carbonate','CO3',-2,1), ('chromate','CrO4',-2,1), ('dichromate','Cr2O7',-2,1), ('hydrogen phospate','HPO4',-2,1), ('oxalate','C2O4',-2,1), ('phosphate','PO4',-3,1), ('phosphite','PO3',-3,1)]
+PolyatomicAnions = [('nitrate','NO3',-1,1), ('nitrite','NO2',-1,1), ('hydroxide','OH',-1,1), ('hypochlorite','ClO',-1,1), ('chlorite','ClO2',-1,1), ('chlorate','ClO3',-1,1), ('perchlorate','ClO4',-1,1), ('permanganate','MnO4',-1,1), ('acetate','C2H3O2',-1,1), ('cyanide','CN',-1,1), ('hydrogen carbonate','HCO3',-1,1), ('hydrogen sulfate','HSO4',-1,1), ('dihydrogen phosphate','H2PO4',-1,1), ('sulfate','SO4',-2,1), ('sulfite','SO3',-2,1), ('carbonate','CO3',-2,1), ('chromate','CrO4',-2,1), ('dichromate','Cr2O7',-2,1), ('hydrogen phosphate','HPO4',-2,1), ('oxalate','C2O4',-2,1), ('phosphate','PO4',-3,1), ('phosphite','PO3',-3,1)]
 # Ion tuple order = (Ion name, forumla, charge, monatomic/polyatomic ID 0/1 = No/Yes)
 
 BimolecularCpds = [('Diboron hexachloride','B2Cl6',0), ('Dibromine monoxide','Br2O','Dibromine monooxide'), ('Bromine trifluoride','BrF3',0), ('Dicarbon dihydride','C2H2','Ethyne'), ('Dicarbon tetrahydride','C2H4','Ethene'), ('Dicarbon hexahydride','C2H6','Ethane'), ('Tricarbon tetrahydride','C3H4','Propyne'), ('Tricarbon hexahydride','C3H6','Propene'), ('Tricarbon octahydride','C3H8','Propane'), ('Tetracarbon decahydride','C4H10','Butane'), ('Tetracarbon hexahydride','C4H6','Butyne'), ('Tetracarbon octahydride','C4H8','Butene'), ('Pentacarbon decahydride','C5H10','Pentene'), ('Pentacarbon octahydride','C5H8','Pentyne'), ('Carbon tetrachloride','CCl4',0), ('Carbon tetrahydride','CH4','Methane'), ('Dichlorine monoxide','Cl2O','Dichlorine monooxide'), ('Carbon monoxide','CO','Carbon monooxide'), ('Carbon dioxide','CO2',0), ('Dihydrogen monoxide','H2O','Water'), ('Diiodine tetroxide','I2O4','Diiodine tetraoxide'), ('Diiodine pentoxide','I2O5','Diiodine pentaoxide'), ('Iodine monobromide','IBr',0), ('Dinitrogen monoxide','N2O','Dinitrogen monooxide'), ('Dinitrogen tetroxide','N2O4','Dinitrogen tetraoxide'), ('Nitrogen trihydride','NH3','Ammonia'), ('Nitrogen tribromide','NBr3',0), ('Nitrogen monoxide','NO','Nitrogen monooxide'), ('Nitrogen dioxide','NO2',0), ('Diphosphorous tetrabromide','P2Br4',0), ('Tetraphosphorous decoxide','P4O10','Tetraphosphorous decaoxide'), ('Phosphorous pentachloride','PCl5',0), ('Phosphorous trifluoride','PF3',0), ('Phosphouous trihydride','PH3',0), ('Sulfur difluoride','SF2',0), ('Sulfur hexafluoride','SF6',0), ('Sulfur dioxide','SO2',0), ('Sulfur trioxide','SO3',0)]
@@ -24,25 +24,32 @@ app.config['DEBUG'] = True
 app.secret_key = 'yrtsimehc'
 
 def chooseCompound(type='all'):
+    oopsHH = True
     if type == 'molecular':
         choice = random.choice(BimolecularCpds)
         compound = (choice[0],choice[1]) #compound = (name, formula)
     elif type == 'ionic':
-        cation = random.choice(cations)
-        anion = random.choice(anions)
-        name = cation[0] + ' ' + anion[0]
-        formula = findSubscripts(cation,anion)
-        compound = (name, formula)
-    else:
-        if random.randint(0,5) == 0:   #20% change to select a bimolecular compound.
-            choice = random.choice(BimolecularCpds)
-            compound = (choice[0],choice[1])
-        else:                           #80% change to select an ionic compound.
+        while oopsHH:               #Prevent formulas starting with 'HH', and prevent calling 'H2O' ionic.
             cation = random.choice(cations)
             anion = random.choice(anions)
             name = cation[0] + ' ' + anion[0]
             formula = findSubscripts(cation,anion)
             compound = (name, formula)
+            if cation[1] != anion[1][0] and formula != "H2O":
+                oopsHH = False
+    else:
+        if random.randint(0,5) == 0:   #20% change to select a bimolecular compound.
+            choice = random.choice(BimolecularCpds)
+            compound = (choice[0],choice[1])
+        else:                           #80% change to select an ionic compound.
+            while oopsHH:
+                cation = random.choice(cations)
+                anion = random.choice(anions)
+                name = cation[0] + ' ' + anion[0]
+                formula = findSubscripts(cation,anion)
+                compound = (name, formula)
+                if cation[1] != anion[1][0] and formula != "H2O":
+                    oopsHH = False
     return compound
 
 def findSubscripts(cation, anion):  #Idenfity the formula for an ionic compound.  Add '()' around polyatomic ions, if needed.
@@ -213,10 +220,37 @@ def ionicnamingtutorial(type):
     if request.method == 'POST':
         page = int(request.form['page'])
         displayText = int(request.form['displayText'])+1
+        if page >= 3:
+            answers = []
+            practiceList = []
+            numCorrect = 0
+            for item in range(4):
+                answers.append(request.form['answer'+str(item)])
+                Compound = (request.form['name'+str(item)],request.form['formula'+str(item)])
+                practiceList.append(Compound)
+                if checkName(answers[item],practiceList[item][0]):
+                    flash('Correct!  :-)', 'correct')
+                    numCorrect += 1
+                else:
+                    flash('Try again, or click here to reveal the answer.', 'error')
+
+            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
+
         return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText)
     
     displayText = 1
     page = int(type)
+    if page >= 3:
+        practiceList = []
+        answers = []
+        numCorrect = 0
+        while len(practiceList) != 4:
+            Compound = chooseCompound('ionic')
+            if ((page == 3 and "(" not in Compound[0]) or (page == 4 and "(" in Compound[0])) and Compound not in practiceList:
+                practiceList.append(Compound)
+
+        return render_template('ionicnamingtutorial.html',title="Naming Ionic Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
+    
     return render_template('ionicnamingtutorial.html',title="Naming Ionic Compounds", page = page, displayText = displayText)
 
 @app.route('/IDthemetals',methods=['POST', 'GET'])
