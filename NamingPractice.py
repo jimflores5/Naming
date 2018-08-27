@@ -220,7 +220,7 @@ def ionicnamingtutorial(type):
     if request.method == 'POST':
         page = int(request.form['page'])
         displayText = int(request.form['displayText'])+1
-        if page >= 3:
+        if page == 3 or page == 5:
             answers = []
             practiceList = []
             numCorrect = 0
@@ -233,20 +233,25 @@ def ionicnamingtutorial(type):
                     numCorrect += 1
                 else:
                     flash('Try again, or click here to reveal the answer.', 'error')
+            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
 
+        elif page == 4:
+            answers = []
+            practiceList = []
+            numCorrect = 0
             return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
 
         return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText)
     
     displayText = 1
     page = int(type)
-    if page >= 3:
+    if page == 3 or page == 5:
         practiceList = []
         answers = []
         numCorrect = 0
         while len(practiceList) != 4:
             Compound = chooseCompound('ionic')
-            if ((page == 3 and "(" not in Compound[0]) or (page == 4 and "(" in Compound[0])) and Compound not in practiceList:
+            if ((page == 3 and "(" not in Compound[0]) or (page == 5 and "(" in Compound[0])) and Compound not in practiceList:
                 practiceList.append(Compound)
 
         return render_template('ionicnamingtutorial.html',title="Naming Ionic Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
