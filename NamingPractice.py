@@ -236,10 +236,8 @@ def ionicnamingtutorial(type):
             return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
 
         elif page == 4:
-            answers = []
-            practiceList = []
-            numCorrect = 0
-            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
+            imageName = 'RomanNumerals'+str(displayText)+'.png'
+            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, imageName = imageName)
 
         return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText)
     
@@ -255,6 +253,10 @@ def ionicnamingtutorial(type):
                 practiceList.append(Compound)
 
         return render_template('ionicnamingtutorial.html',title="Naming Ionic Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
+    
+    elif page == 4:
+        imageName = 'RomanNumerals'+str(displayText)+'.png'
+        return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, imageName = imageName)
     
     return render_template('ionicnamingtutorial.html',title="Naming Ionic Compounds", page = page, displayText = displayText)
 
