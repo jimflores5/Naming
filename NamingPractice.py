@@ -105,6 +105,18 @@ def checkName(answer,name):
             result = False
     return result
 
+def checkResponse(response,displayText):
+    answers = [('2-','-2'),'3',('6-','-6'),('6+','+6'),('3+','+3')]
+    responseNumber = displayText - 10
+    print(displayText, responseNumber, answers[responseNumber], response)
+    if responseNumber != 1 and ('+' not in response and '-' not in response) and response != '?':
+        return 'sign'
+    if (response == '?' or response in answers[responseNumber]) and response != '':
+        return True
+    else:
+        return False
+
+
 @app.route('/')
 def index():
     session.clear()
@@ -236,8 +248,22 @@ def ionicnamingtutorial(type):
             return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
 
         elif page == 4:
+            response = ''
+            if displayText > 9 and displayText <= 14:
+                response = request.form['response']
+                if checkResponse(response,displayText) == 'sign':
+                    flash('Be sure to include the sign (+/-) in addition to the number.', 'error')
+                    displayText -= 1
+                elif checkResponse(response,displayText):
+                    imageName = 'RomanNumerals'+str(displayText)+'.png'
+                    response = ''
+                else:
+                    flash("Try again, or submit '?' to see the answer.", 'error')
+                    displayText -= 1
+
             imageName = 'RomanNumerals'+str(displayText)+'.png'
-            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, imageName = imageName)
+            
+            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText, imageName = imageName, response = response)
 
         return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = displayText)
     
@@ -273,6 +299,34 @@ def IDthemetals():
     displayImage = 1
     page = 1
     return render_template('idthemetals.html',title="Naming Ionic Compounds", page = page, displayImage = displayImage)
+
+@app.route('/idpolyatomics',methods=['POST', 'GET'])
+def idpolyatomics():
+    if request.method == 'POST':
+        page = int(request.form['page'])
+        displayImage = int(request.form['displayImage'])+1
+        if displayImage <= 2:
+            return render_template('idpolyatomics.html', title="Naming Ionic Compounds", page = page, displayImage = displayImage)
+        else:
+            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = 4)
+    
+    displayImage = 1
+    page = 1
+    return render_template('idpolyatomics.html',title="Naming Ionic Compounds", page = page, displayImage = displayImage)
+
+@app.route('/multiplecharges',methods=['POST', 'GET'])
+def multiplecharges():
+    if request.method == 'POST':
+        page = int(request.form['page'])
+        displayImage = int(request.form['displayImage'])+1
+        if displayImage <= 2:
+            return render_template('multiplecharges.html', title="Naming Ionic Compounds", page = page, displayImage = displayImage)
+        else:
+            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = 3, imageName = 'RomanNumerals3.png')
+    
+    displayImage = 1
+    page = 4
+    return render_template('multiplecharges.html',title="Naming Ionic Compounds", page = page, displayImage = displayImage)
 
 if __name__ == '__main__':
     app.run()

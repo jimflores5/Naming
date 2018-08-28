@@ -30,7 +30,7 @@
                                     <a class="btn btn-danger" href="/IDthemetals" role="button">How Do I Do This?</a>
                                     <input class="btn btn-success" type="submit" value="Got it!">
                                 {% else %}
-                                    <a class="btn btn-danger" href="/" role="button">How Do I Do This?</a>
+                                    <a class="btn btn-danger" href="/idpolyatomics" role="button">How Do I Do This?</a>
                                     <a class="btn btn-success" href="/ionicnamingtutorial/{{page+1}}" role="button">Got it!</a>
                                 {% endif %}
                                 <input name="page" type="hidden" value="{{page}}">
@@ -261,6 +261,7 @@
                                         </ol>
                                     {% endif %}
                                 {% elif displayText >= 9 %}
+                                {% with messages = get_flashed_messages(with_categories=True) %}
                                     <li>Now look at Fe<sub>2</sub>O<sub>3</sub> and answer the following:</li>
                                     <ul class="wrapper text-left mt-3" style="font-size: 1.7vw"></ul>
                                     {% if displayText == 9 %}
@@ -303,6 +304,9 @@
                                             <input name="response" type="text" value="{{response}}" size="1"></br>
                                         </li>
                                     {% endif %}
+                                    {% for category,message in messages %}                                      
+                                        <span class='{{category}}' style="font-size: 14pt">{{message}}</span>
+                                    {% endfor %}
                                     {% if displayText > 13 %}
                                         <li style="color:blue">Identify the charge on the anion: (2-)</li>
                                         <li style="color:green">How many oxide ions are present in the compound? (3)</li>
@@ -319,7 +323,8 @@
                                     {% endif %}
                                     {% if displayText > 16 %}
                                         <li style="color:purple">Now practice adding Roman numerals when naming ionic compounds.</li>
-                                    {% endif %}                                    
+                                    {% endif %} 
+                                {% endwith %}                                   
                                 {% endif %}
                                 </ul>
                             </ul>
@@ -329,7 +334,7 @@
                                 {% elif displayText == 2 %}
                                     <input class="btn btn-success" type="submit" value="NOPE!  Gotta fix this!">
                                 {% elif displayText == 3 %}
-                                    <a class="btn btn-danger" href="/" role="button">Which metals can do this?</a>
+                                    <a class="btn btn-danger" href="/multiplecharges" role="button">Which metals can do this?</a>
                                     <input class="btn btn-success" type="submit" value="Got it!">
                                 {% elif displayText == 17 %}
                                     <a class="btn btn-danger" href="/ionicnamingtutorial/{{page+1}}" role="button">Next Page</a>
@@ -338,6 +343,7 @@
                                 {% endif %}
                                 <input name="page" type="hidden" value="{{page}}">
                                 <input name="displayText" type="hidden" value="{{displayText}}">
+                                <input name="response" type="hidden" value="{{response}}">
                             </div>
                         </form>
                     </div>
