@@ -304,29 +304,51 @@ def IDthemetals():
 def idpolyatomics():
     if request.method == 'POST':
         page = int(request.form['page'])
-        displayImage = int(request.form['displayImage'])+1
-        if displayImage <= 2:
-            return render_template('idpolyatomics.html', title="Naming Ionic Compounds", page = page, displayImage = displayImage)
-        else:
-            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = 4)
+        answers = []
+        practiceList = []
+        numCorrect = 0
+        correctAns = []
+        if request.form['done'] == '1':
+            return render_template('ionicnamingtutorial.html',title="Naming Ionic Compounds", page = page, displayText = 4)
+            
+        for item in range(4):
+            answers.append(request.form['answer'+str(item)])
+            Compound = (request.form['name'+str(item)],request.form['formula'+str(item)])
+            practiceList.append(Compound)
+            correctAns.append(request.form['correctAns'+str(item)])
+            print(answers[item],correctAns[item])
+            if answers[item] == correctAns[item]:
+                flash('Correct!  :-)', 'correct')
+                numCorrect += 1
+            else:
+                flash('Try again', 'error')
+        return render_template('idpolyatomics.html', title="Naming Ionic Compounds", page = page, practiceList = practiceList, answers = answers, numCorrect = numCorrect, digits = digits, correctAns = correctAns)
     
-    displayImage = 1
     page = 1
-    return render_template('idpolyatomics.html',title="Naming Ionic Compounds", page = page, displayImage = displayImage)
+    practiceList = []
+    answers = []
+    numCorrect = 0
+    correctAns = []
+    while len(practiceList) != 4:
+        Compound = chooseCompound('ionic')
+        if Compound not in practiceList:
+            practiceList.append(Compound)
+            nameParts = Compound[0].split()
+            if [entry for entry in PolyatomicAnions if nameParts[-1] in entry]:
+                correctAns.append('polyatomic')
+            else:
+                correctAns.append('monatomic')
+    print(correctAns)
+    return render_template('idpolyatomics.html',title="Naming Ionic Compounds", page = page, practiceList = practiceList, answers = answers, numCorrect = numCorrect, digits = digits, correctAns = correctAns)
 
 @app.route('/multiplecharges',methods=['POST', 'GET'])
 def multiplecharges():
     if request.method == 'POST':
         page = int(request.form['page'])
-        displayImage = int(request.form['displayImage'])+1
-        if displayImage <= 2:
-            return render_template('multiplecharges.html', title="Naming Ionic Compounds", page = page, displayImage = displayImage)
-        else:
-            return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = 3, imageName = 'RomanNumerals3.png')
+        return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = 3, imageName = 'RomanNumerals3.png')
     
-    displayImage = 1
     page = 4
-    return render_template('multiplecharges.html',title="Naming Ionic Compounds", page = page, displayImage = displayImage)
+    return render_template('multiplecharges.html',title="Naming Ionic Compounds", page = page)
 
 if __name__ == '__main__':
     app.run()

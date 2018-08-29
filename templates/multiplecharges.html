@@ -33,25 +33,20 @@
     </head>
 
     <body>
-        <div class="container-fluid wrapper text-center">
-            <div class="col-12">
-                <figure class="figure">
-                    {% if displayImage == 1 %}
-                        <img src="{{url_for('static', filename='TempImage.png')}}" class="figure-img img-fluid">
-                    {% else %}
-                        <img src="{{url_for('static', filename='TempImage.png')}}" class="figure-img img-fluid">
-                    {% endif %}
-                </figure>
-        
-                <form action="/multiplecharges" method="post">
-                    {% if displayImage == 1 %}
-                        <input class="btn-lg btn-danger" type="submit" value="Next">
-                    {% else %}
+        <div class="container-fluid border-0" style="font-size:1.75vw">
+            <div class="row justify-content-left wrapper text-center">
+                <div class="col-6">
+                    <p style="color:green">Watch the video first, then try the practice problems.</p>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <video controls src="{{url_for('static', filename='MultipleCharges.mov')}}"></video>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <form action="/multiplecharges" method="post">
                         <input class="btn-lg btn-success" type="submit" value="Got it!">
-                    {% endif %}
-                    <input name="page" type="hidden" value="4">
-                    <input name="displayImage" type="hidden" value="{{displayImage}}">
-                </form>
+                        <input name="page" type="hidden" value="4">
+                    </form>
+                </div>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

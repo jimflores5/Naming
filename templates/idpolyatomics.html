@@ -33,25 +33,53 @@
     </head>
 
     <body>
-        <div class="container-fluid wrapper text-center">
-            <div class="col-12">
-                <figure class="figure">
-                    {% if displayImage == 1 %}
-                        <img src="{{url_for('static', filename='TempImage.png')}}" class="figure-img img-fluid">
-                    {% else %}
-                        <img src="{{url_for('static', filename='TempImage.png')}}" class="figure-img img-fluid">
-                    {% endif %}
-                </figure>
-        
-                <form action="/idpolyatomics" method="post">
-                    {% if displayImage == 1 %}
-                        <input class="btn-lg btn-danger" type="submit" value="Next">
-                    {% else %}
-                        <input class="btn-lg btn-success" type="submit" value="Got it!">
-                    {% endif %}
-                    <input name="page" type="hidden" value="1">
-                    <input name="displayImage" type="hidden" value="{{displayImage}}">
-                </form>
+        <div class="container-fluid border-0" style="font-size:1.75vw">
+            <div class="row justify-content-left wrapper text-center">
+                <div class="col-6">
+                    <p style="color:green">Watch the video first, then try the practice problems.</p>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <video controls src="{{url_for('static', filename='MonovsPolyatomic.mov')}}"></video>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <form action="/idpolyatomics" method="post">
+                        <p style="color:brown"><u>For each of the following, is the ANION monatomic or polyatomic?</u></p>
+                        {% with messages = get_flashed_messages(with_categories=True) %}
+                            <form action="/idpolyatomics" method="post">
+                                <ul type="a" class="wrapper text-left mt-3" style="font-size: 1.75vw">
+                                    {% for item in range(4) %}
+                                    <li style="color:blue">
+                                        <label for "answer{{item}}"><span>
+                                            {% for char in practiceList[item][1] %}{% if char in digits %}<sub>{{char}}</sub>{% else %}{{char}}{% endif %}{% endfor %}
+                                            </span>= </label>
+                                        <input type="radio" name="answer{{item}}" value="monatomic" {% if answers[item] == 'monatomic' %} checked {% endif %}> <span style="font-size: 1.5vw; color:black">Monatomic</span>
+                                        <input type="radio" name="answer{{item}}" value="polyatomic" {% if answers[item] == 'polyatomic' %} checked {% endif %}> <span style="font-size: 1.5vw; color:black">Polyatomic</span>
+                                    </li>
+                                    {% if messages %}
+                                        {% set message = messages[item] %}                                        
+                                        <span class='{{message[0]}}' style="font-size: 14pt">{{message[1]}}</span>
+                                    {% endif %}
+                                        <hr>
+                                        <input name="name{{item}}" type="hidden" value="{{practiceList[item][0]}}">
+                                        <input name="formula{{item}}" type="hidden" value="{{practiceList[item][1]}}">
+                                        <input name="correctAns{{item}}" type="hidden" value="{{correctAns[item]}}">
+                                        <input name="page" type="hidden" value="{{page}}">
+                                    {% endfor %}
+                                </ul>
+                                {% if numCorrect != 4 %}
+                                    <input class="btn btn-success mb-3" type="submit" value="Check">
+                                    <a class="btn btn-info mb-3" href="/idpolyatomics" role="button">Refresh Compounds</a>
+                                    <input name="done" type="hidden" value="0">
+                                {% else %}
+                                    <a class="btn btn-info mb-3" href="/idpolyatomics" role="button">Refresh Compounds</a>
+                                    <input class="btn btn-success mb-3" type="submit" value="Got it!">
+                                    <input name="done" type="hidden" value="1">
+                                {% endif %}
+                            </form>
+                        {% endwith %}
+                        <input name="page" type="hidden" value="1">
+                    </form>
+                </div>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
