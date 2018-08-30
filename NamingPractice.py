@@ -323,7 +323,7 @@ def idpolyatomics():
             else:
                 flash('Try again', 'error')
         return render_template('idpolyatomics.html', title="Naming Ionic Compounds", page = page, practiceList = practiceList, answers = answers, numCorrect = numCorrect, digits = digits, correctAns = correctAns)
-    
+
     page = 1
     practiceList = []
     answers = []
@@ -338,17 +338,54 @@ def idpolyatomics():
                 correctAns.append('polyatomic')
             else:
                 correctAns.append('monatomic')
-    print(correctAns)
     return render_template('idpolyatomics.html',title="Naming Ionic Compounds", page = page, practiceList = practiceList, answers = answers, numCorrect = numCorrect, digits = digits, correctAns = correctAns)
 
 @app.route('/multiplecharges',methods=['POST', 'GET'])
 def multiplecharges():
     if request.method == 'POST':
         page = int(request.form['page'])
-        return render_template('ionicnamingtutorial.html', title="Naming Ionic Compounds", page = page, displayText = 3, imageName = 'RomanNumerals3.png')
+        if request.form['done'] == '1':
+            return render_template('ionicnamingtutorial.html',title="Naming Ionic Compounds", page = page, displayText = 3, imageName = 'RomanNumerals3.png')
+        metals = []
+        answers = request.form.getlist('answers')
+        correctAns = []
+        for item in range(4):
+            metal = (request.form['symbol'+str(item)],request.form['type'+str(item)])
+            metals.append(metal)
+            if metal[1] == 'single':
+                correctAns.append(metal[0])
+        if correctAns == answers:
+            flash('Correct!  :-)', 'correct')
+            allCorrect = True
+        else:
+            if len(answers) > len(correctAns):
+                flash('Try again (too many boxes checked).' , 'error')
+            elif len(answers) < len(correctAns):
+                flash('Try again (too few boxes checked).' , 'error')
+            else:
+                flash('Try again.  Correct number of boxes checked, but incorrect selections.' , 'error')
+            allCorrect = False
+
+        return render_template('multiplecharges.html',title="Naming Ionic Compounds", page = page, metals = metals, answers = answers, allCorrect = allCorrect, correctAns = correctAns)
     
     page = 4
-    return render_template('multiplecharges.html',title="Naming Ionic Compounds", page = page)
+    metals = []
+    answers = []
+    allCorrect = False
+    correctAns = []
+    while len(metals) != 4:
+        cation = random.choice(cations)
+        if '(' not in cation[0] and cation[1] != 'NH4':
+            metal = (cation[1],'single')
+        elif '(' in cation[0] and cation[1] != 'NH4':
+            metal = (cation[1],'multiple')
+        else:
+            metal = ''
+        if metal not in metals and metal != '':
+            metals.append(metal)
+            if metal[1] == 'single':
+                correctAns.append(metal[0])
+    return render_template('multiplecharges.html',title="Naming Ionic Compounds", page = page, metals = metals, answers = answers, allCorrect = allCorrect, correctAns = correctAns)
 
 if __name__ == '__main__':
     app.run()

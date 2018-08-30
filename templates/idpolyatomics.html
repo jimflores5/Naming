@@ -33,7 +33,22 @@
     </head>
 
     <body>
-        <div class="container-fluid border-0" style="font-size:1.75vw">
+        <div class="container-fluid border-0 wrapper text-left" style="font-size:1.75vw">
+            <div class="row justify-content-left wrapper text-left">
+                <div class="col-5" style="border:1px">
+                    <h1><u>How to spot polyatomic ions</u>:</h1>
+                </div>
+                <div class="col-2">
+                    <form action="/idpolyatomics" method="post">
+                        <input class="btn-lg btn-primary mt-2" type="submit" value="Return to Tutorial">
+                        <input name="done" type="hidden" value="1">
+                        <input name="page" type="hidden" value="{{page}}">
+                    </form>
+                </div>
+            </div>
+        </div>
+            </br>
+        <div class="container-fluid border-top" style="font-size:1.75vw">
             <div class="row justify-content-left wrapper text-center">
                 <div class="col-6">
                     <p style="color:green">Watch the video first, then try the practice problems.</p>
@@ -52,8 +67,8 @@
                                         <label for "answer{{item}}"><span>
                                             {% for char in practiceList[item][1] %}{% if char in digits %}<sub>{{char}}</sub>{% else %}{{char}}{% endif %}{% endfor %}
                                             </span>= </label>
-                                        <input type="radio" name="answer{{item}}" value="monatomic" {% if answers[item] == 'monatomic' %} checked {% endif %}> <span style="font-size: 1.5vw; color:black">Monatomic</span>
-                                        <input type="radio" name="answer{{item}}" value="polyatomic" {% if answers[item] == 'polyatomic' %} checked {% endif %}> <span style="font-size: 1.5vw; color:black">Polyatomic</span>
+                                        <input type="radio" name="answer{{item}}" value="monatomic" required {% if answers[item] == 'monatomic' %} checked {% endif %}> <span style="font-size: 1.5vw; color:black">Monatomic</span>
+                                        <input type="radio" name="answer{{item}}" value="polyatomic" required {% if answers[item] == 'polyatomic' %} checked {% endif %}> <span style="font-size: 1.5vw; color:black">Polyatomic</span>
                                     </li>
                                     {% if messages %}
                                         {% set message = messages[item] %}                                        
@@ -67,8 +82,8 @@
                                     {% endfor %}
                                 </ul>
                                 {% if numCorrect != 4 %}
-                                    <input class="btn btn-success mb-3" type="submit" value="Check">
                                     <a class="btn btn-info mb-3" href="/idpolyatomics" role="button">Refresh Compounds</a>
+                                    <input class="btn btn-success mb-3" type="submit" value="Check">
                                     <input name="done" type="hidden" value="0">
                                 {% else %}
                                     <a class="btn btn-info mb-3" href="/idpolyatomics" role="button">Refresh Compounds</a>

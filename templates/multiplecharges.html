@@ -33,7 +33,22 @@
     </head>
 
     <body>
-        <div class="container-fluid border-0" style="font-size:1.75vw">
+        <div class="container-fluid border-0 wrapper text-left" style="font-size:1.75vw">
+            <div class="row justify-content-left wrapper text-left">
+                <div class="col-6" style="border:1px">
+                    <h1><u>Which metals form only ONE cation?</u></h1>
+                </div>
+                <div class="col-2">
+                    <form action="/multiplecharges" method="post">
+                        <input class="btn-lg btn-primary mt-2" type="submit" value="Return to Tutorial">
+                        <input name="done" type="hidden" value="1">
+                        <input name="page" type="hidden" value="{{page}}">
+                    </form>
+                </div>
+            </div>
+        </div>
+        </br>
+        <div class="container-fluid border-top" style="font-size:1.75vw">
             <div class="row justify-content-left wrapper text-center">
                 <div class="col-6">
                     <p style="color:green">Watch the video first, then try the practice problems.</p>
@@ -43,8 +58,37 @@
                 </div>
                 <div class="col-6">
                     <form action="/multiplecharges" method="post">
-                        <input class="btn-lg btn-success" type="submit" value="Got it!">
-                        <input name="page" type="hidden" value="4">
+                        <p style="color:brown"><u>Which of the following metals form ONLY ONE possible cation?  (Check all that apply)</u></p>
+                        {% with messages = get_flashed_messages(with_categories=True) %}
+                            <form action="/multiplecharges" method="post">
+                                <div class="form-check">
+                                    {% for item in range(4) %}
+                                        <label class="form-check-label" for="answer{{item}}">
+                                            <input type="checkbox" class="form-check-input" id="check1" name="answers" value="{{metals[item][0]}}" {% if metals[item][0] in answers %} checked {% endif %}>{{metals[item][0]}}
+                                        </label>
+                                        <input name="symbol{{item}}" type="hidden" value="{{metals[item][0]}}">
+                                        <input name="type{{item}}" type="hidden" value="{{metals[item][1]}}">
+                                        <hr>
+                                    {% endfor %}
+                                </div>
+                                <input name="page" type="hidden" value="{{page}}">
+                                {% if not allCorrect %}
+                                    <a class="btn btn-info mb-3" href="/multiplecharges" role="button">Refresh Metals</a>
+                                    <input class="btn btn-success mb-3" type="submit" value="Check">
+                                    <input name="done" type="hidden" value="0">
+                                {% else %}
+                                    <a class="btn btn-info mb-3" href="/multiplecharges" role="button">Refresh Metals</a>
+                                    <input class="btn btn-success mb-3" type="submit" value="Got it!">
+                                    <input name="done" type="hidden" value="1">
+                                {% endif %}
+                                {% if messages %}
+                                    <div>
+                                        <span class='{{messages[0][0]}}' style="font-size: 14pt">{{messages[0][1]}}</span>
+                                    </div>
+                                {% endif %}
+                            </form>
+                        {% endwith %}
+                        <input name="page" type="hidden" value="1">
                     </form>
                 </div>
             </div>
