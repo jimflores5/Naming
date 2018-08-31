@@ -35,7 +35,7 @@ def chooseCompound(type='all'):
             name = cation[0] + ' ' + anion[0]
             formula = findSubscripts(cation,anion)
             compound = (name, formula)
-            if cation[1] != anion[1][0] and formula != "H2O":
+            if cation[1] != anion[1][0] and formula != "H2O" and formula != "HOH":
                 oopsHH = False
     else:
         if random.randint(0,5) == 0:   #20% change to select a bimolecular compound.
@@ -48,7 +48,7 @@ def chooseCompound(type='all'):
                 name = cation[0] + ' ' + anion[0]
                 formula = findSubscripts(cation,anion)
                 compound = (name, formula)
-                if cation[1] != anion[1][0] and formula != "H2O":
+                if cation[1] != anion[1][0] and formula != "H2O" and formula != "HOH":
                     oopsHH = False
     return compound
 
