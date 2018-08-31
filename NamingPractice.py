@@ -316,7 +316,6 @@ def idpolyatomics():
             Compound = (request.form['name'+str(item)],request.form['formula'+str(item)])
             practiceList.append(Compound)
             correctAns.append(request.form['correctAns'+str(item)])
-            print(answers[item],correctAns[item])
             if answers[item] == correctAns[item]:
                 flash('Correct!  :-)', 'correct')
                 numCorrect += 1
@@ -386,6 +385,68 @@ def multiplecharges():
             if metal[1] == 'single':
                 correctAns.append(metal[0])
     return render_template('multiplecharges.html',title="Naming Ionic Compounds", page = page, metals = metals, answers = answers, allCorrect = allCorrect, correctAns = correctAns)
+
+@app.route('/covalentnamingtutorial/<type>',methods=['POST', 'GET'])
+def covalentnamingtutorial(type):
+    if request.method == 'POST':
+        page = int(request.form['page'])
+        displayText = int(request.form['displayText'])+1
+        answers = []
+        practiceList = []
+        numCorrect = 0
+        if page == 1:
+            correctAns = []                
+            for item in range(4):
+                answers.append(request.form['answer'+str(item)])
+                Compound = (request.form['name'+str(item)],request.form['formula'+str(item)])
+                practiceList.append(Compound)
+                correctAns.append(request.form['correctAns'+str(item)])
+                if answers[item] == correctAns[item]:
+                    flash('Correct!  :-)', 'correct')
+                    numCorrect += 1
+                else:
+                    flash('Try again', 'error')
+            return render_template('covalentnamingtutorial.html', title="Naming Covalent Compounds", page = page, displayText = displayText, practiceList = practiceList, answers = answers, numCorrect = numCorrect, digits = digits, correctAns = correctAns)
+        else:
+            for item in range(4):
+                answers.append(request.form['answer'+str(item)])
+                Compound = (request.form['name'+str(item)],request.form['formula'+str(item)])
+                practiceList.append(Compound)
+                if checkName(answers[item],practiceList[item][0]):
+                    flash('Correct!  :-)', 'correct')
+                    numCorrect += 1
+                else:
+                    flash('Try again, or click here to reveal the answer.', 'error')
+            return render_template('covalentnamingtutorial.html', title="Naming Covalent Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
+        
+    displayText = 1
+    page = int(type)
+    practiceList = []
+    answers = []
+    numCorrect = 0
+    if page == 1:
+        correctAns = []
+        while len(practiceList) != 4:
+            flip = random.randint(0,1)
+            if flip == 0:
+                Compound = chooseCompound('ionic')
+            else:
+                Compound = chooseCompound('molecular')
+            if Compound not in practiceList and [entry for entry in BimolecularCpds if Compound[0] in entry]:
+                practiceList.append(Compound)
+                correctAns.append('covalent')
+            elif Compound not in practiceList:
+                practiceList.append(Compound)
+                correctAns.append('ionic')
+        print(answers,correctAns)
+        return render_template('covalentnamingtutorial.html',title="Naming Covalent Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect, correctAns = correctAns)
+    else:
+        while len(practiceList) != 4:
+            Compound = chooseCompound('molecular')
+            if Compound not in practiceList:
+                practiceList.append(Compound)
+
+        return render_template('covalentnamingtutorial.html',title="Naming Covalent Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
 
 if __name__ == '__main__':
     app.run()
