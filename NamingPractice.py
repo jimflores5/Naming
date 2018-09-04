@@ -448,5 +448,38 @@ def covalentnamingtutorial(type):
 
         return render_template('covalentnamingtutorial.html',title="Naming Covalent Compounds", page = page, displayText = displayText, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
 
+@app.route('/ffmtutorial/<type>',methods=['POST', 'GET'])
+def ffmtutorial(type):
+    if request.method == 'POST':
+        page = int(request.form['page'])
+        answers = []
+        practiceList = []
+        numCorrect = 0
+        for item in range(4):
+            answers.append(request.form['answer'+str(item)])
+            Compound = (request.form['name'+str(item)],request.form['formula'+str(item)])
+            practiceList.append(Compound)
+            if answers[item] == Compound[1]:
+                flash('Correct!  :-)', 'correct')
+                numCorrect += 1
+            else:
+                flash('Try again, or click here to reveal the answer.', 'error')
+        return render_template('ffmtutorial.html', title="Formulas from Names", page = page, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
+    
+    page = int(type)
+    answers = []
+    practiceList = []
+    numCorrect = 0
+    if page == 1:
+        compoundType = 'ionic'
+    else:
+        compoundType = 'molecular'
+    while len(practiceList) != 4:
+        Compound = chooseCompound(compoundType)
+        if Compound not in practiceList:
+            practiceList.append(Compound)
+
+    return render_template('ffmtutorial.html',title="Formulas from Names", page = page, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect)
+
 if __name__ == '__main__':
     app.run()

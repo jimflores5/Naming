@@ -6,28 +6,28 @@
         <br/>
         <h2>Provide the formula for: <span style="color:blue">{{name}}</span></h2></br>
         {% with messages = get_flashed_messages(with_categories=True) %} 
-        <form action="/formulasfromnames/{{type}}" method="post">
-            <label for "answer" style="font-size: 16pt; color:blue">Formula: </label>
-            <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "15"></br>
-            {% for category,message in messages %}
-                {% if category != 'error' %}
-                    <span class='{{category}}' style="font-size: 14pt">{{message}}</span>
-                {% else %}
-                    <div class="btn-group dropright">
-                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14pt; color:red">
-                            {{message}}
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <p class="dropdown-item" style="font-size: 24pt; color:red">{% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</p>
+            <form action="/formulasfromnames/{{type}}" method="post">
+                <label for "answer" style="font-size: 16pt; color:blue">Formula: </label>
+                <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "15"></br>
+                {% for category,message in messages %}
+                    {% if category != 'error' %}
+                        <span class='{{category}}' style="font-size: 14pt">{{message}}</span>
+                    {% else %}
+                        <div class="btn-group dropright">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14pt; color:red">
+                                {{message}}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <p class="dropdown-item" style="font-size: 24pt; color:red">{% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</p>
+                            </div>
                         </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-            </br>
-            <input name="name" type="hidden" value="{{name}}">
-            <input name="formula" type="hidden" value="{{formula}}">
-            <input name="firstAttempt" type="hidden" value="{{firstAttempt}}">
-        </form>
+                    {% endif %}
+                {% endfor %}
+                </br>
+                <input name="name" type="hidden" value="{{name}}">
+                <input name="formula" type="hidden" value="{{formula}}">
+                <input name="firstAttempt" type="hidden" value="{{firstAttempt}}">
+            </form>
         {% endwith %}
         <p style="font-size: 16pt; color:purple">(Hit 'Return' or 'Enter' to check your answer)</p>
         <div>

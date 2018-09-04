@@ -1,0 +1,119 @@
+{% extends "ffmtutorialbase.html" %}
+<!-- Remember this: https://stackoverflow.com/questions/6865081/add-subscript-to-numbers-on-the-fly-as-user-types-using-jquery -->
+{% block content %}
+    <div class='wrapper text-left'>
+        {% if page == 1 %}
+            <h2 class="ml-1"><u>Writing Ionic Formulas</u>:</h2>
+        {% else %}
+            <h2 class="ml-1"><u>Yes, it IS that easy</u>:</h2>
+        {% endif %}
+        <div class="container-fluid wrapper text-center" style="font-size:1.7vw">
+            <div class="row">
+                <div class="col-5 border-right">
+                    <p style="color:green">Watch the video first, then try the practice problems.</p>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        {% if page == 1 %}
+                            <video controls src="{{url_for('static', filename='Placeholder.mov')}}"></video>
+                        {% else %}
+                            <video controls src="{{url_for('static', filename='Placeholder.mov')}}"></video>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-7">
+                    <p style="color:brown"><u>Provide the chemical formula for each of the following</u>:</p>
+                    {% with messages = get_flashed_messages(with_categories=True) %}
+                        <form action="/ffmtutorial/{{page}}" method="post">
+                            <ul type="a" class="wrapper text-left mt-3" style="font-size: 1.75vw">
+                                {% for item in range(4) %}
+                                <li style="color:blue">
+                                    <label for "answer{{item}}"><span>
+                                        {{practiceList[item][0]}}
+                                        </span>= </label>
+                                    <input name="answer{{item}}" type="text" value="{{answers[item]}}" size="10"></br>
+                                </li>
+                                {% if messages %}
+                                    {% set message = messages[item] %}                                        
+                                    {% if message[0] != 'error' %}
+                                        <span class='{{message[0]}}' style="font-size: 14pt">{{message[1]}}</span>
+                                    {% else %}
+                                        <div class="btn-group dropright">
+                                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14pt; color:red">
+                                                <span class='{{message[0]}}'>{{message[1]}}</span>
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <p class="dropdown-item" style="font-size: 20pt; color:red">{% for char in practiceList[item][1] %}{% if char in digits %}<sub>{{char}}</sub>{% else %}{{char}}{% endif %}{% endfor %}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                    <hr>
+                                    <input name="name{{item}}" type="hidden" value="{{practiceList[item][0]}}">
+                                    <input name="formula{{item}}" type="hidden" value="{{practiceList[item][1]}}">
+                                    <input name="page" type="hidden" value="{{page}}">
+                                {% endfor %}
+                            </ul>
+                            {% if numCorrect != 4 %}
+                                <a class="btn btn-info mb-3" href="/ffmtutorial/{{page}}" role="button">Refresh Compounds</a>
+                                <input class="btn btn-success mb-3" type="submit" value="Check">
+                            {% else %}
+                                <a class="btn btn-info mb-3" href="/ffmtutorial/{{page}}" role="button">Refresh Compounds</a>
+                                <a class="btn btn-primary mb-3" href="/" role="button">Main Menu</a>
+                            {% endif %}
+                        </form>
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid justify-content-between" style="font-size:1.7vw">
+            <div class="row justify-content-left wrapper text-center">
+                <div class="col-5 border-0">
+                    <button class="btn-sm btn-outline-info mt-2" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Summary of Formula Steps
+                    </button>
+                    {% if page == 1 %}
+                        <div class="collapse" id="collapseOne">
+                            <div class="card card-body">
+                                <figure class="figure mb-0">
+                                    <img src="{{url_for('static', filename='TempImage.png')}}" class="figure-img img-fluid" style="width:65%; height:100%">
+                                </figure>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="collapse" id="collapseOne">
+                            <div class="card card-body">
+                                <figure class="figure mb-0">
+                                    <img src="{{url_for('static', filename='TempImage.png')}}" class="figure-img img-fluid" style="width:65%; height:100%">
+                                </figure>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-7 border-0">
+                    {% if page == 1 %}
+                        <button class="btn-sm btn-outline-danger mt-2" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Polyatomic Ion List
+                        </button>
+                        <div class="collapse" id="collapseTwo">
+                            <div class="card card-body">
+                                <figure class="figure mb-0">
+                                    <img src="{{url_for('static', filename='IonList.png')}}" class="figure-img img-fluid">
+                                </figure>
+                            </div>
+                        </div>
+                    {% else %}
+                        <button class="btn-sm btn-outline-danger mt-2" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Prefix List
+                        </button>
+                        <div class="collapse" id="collapseTwo">
+                            <div class="card card-body">
+                                <figure class="figure mb-0">
+                                    <img src="{{url_for('static', filename='Prefixes.png')}}" class="figure-img img-fluid" style="width:40%; height:100%">
+                                </figure>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
