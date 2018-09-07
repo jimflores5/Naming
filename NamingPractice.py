@@ -168,21 +168,23 @@ def formulasfromnames(type):
         formula = request.form['formula']
         if answer == formula:
             flash('Correct!  :-)', 'correct')
+            correct = True
             if firstAttempt == 'True':
                 formCorrect += 1
                 session['formCorrect'] = formCorrect
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
+            correct = False
 
         ratioCorrect = round(Decimal(formCorrect/formAttempts*100),1)
-        return render_template('formulasfromnames.html', title="Formulas from Names", name = name, formula = formula, answer = answer, digits = digits, type = type, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = False, ratioCorrect = ratioCorrect)
+        return render_template('formulasfromnames.html', title="Formulas from Names", name = name, formula = formula, answer = answer, digits = digits, type = type, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = False, ratioCorrect = ratioCorrect, correct=correct)
 
     formAttempts = session.get('formAttempts', None) + 1
     formCorrect = session.get('formCorrect', None)
     session['formAttempts'] = formAttempts
     ratioCorrect = round(Decimal(formCorrect/formAttempts*100),1)
     Compound = chooseCompound(type)
-    return render_template('formulasfromnames.html',title="Formulas from Names", name = Compound[0], formula = Compound[1], digits = digits, type = type, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = True, ratioCorrect = ratioCorrect)
+    return render_template('formulasfromnames.html',title="Formulas from Names", name = Compound[0], formula = Compound[1], digits = digits, type = type, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = True, ratioCorrect = ratioCorrect, correct = False)
 
 @app.route('/allnaming',methods=['POST', 'GET'])
 def allnaming():
@@ -198,18 +200,21 @@ def allnaming():
         question = request.form['question']
         if question == '0' and checkName(answer,name):
             flash('Correct!  :-)', 'correct')
+            correct = True
             if firstAttempt == 'True':
                 nameCorrect += 1
                 session['nameCorrect'] = nameCorrect
         elif question == '1' and answer == formula:
             flash('Correct!  :-)', 'correct')
+            correct = True
             if firstAttempt == 'True':
                 formCorrect += 1
                 session['formCorrect'] = formCorrect
         else:
             flash('Try again, or click here to reveal the answer.', 'error')
+            correct = False
     
-        return render_template('allnaming.html', title="Practice All Naming", name = name, formula = formula, answer = answer, digits = digits, question = question, nameAttempts = nameAttempts, nameCorrect = nameCorrect, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = False)
+        return render_template('allnaming.html', title="Practice All Naming", name = name, formula = formula, answer = answer, digits = digits, question = question, nameAttempts = nameAttempts, nameCorrect = nameCorrect, formAttempts = formAttempts, formCorrect = formCorrect, firstAttempt = False, correct = correct)
 
     Compound = chooseCompound()
     question = str(random.randint(0,1))

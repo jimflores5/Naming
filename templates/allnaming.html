@@ -10,8 +10,8 @@
                 </span></h2></br>
             {% with messages = get_flashed_messages(with_categories=True) %} 
             <form action="/allnaming" method="post">
-                <label for "answer" style="font-size: 16pt; color:blue">Name: </label>
-                <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "28"></br>
+                <label for "answer" style="font-size:1.75vw; color:blue">Name: </label>
+                <input name="answer" type="text" value="{{answer}}" style="font-size:1.75vw" size = "28"></br>
                 {% for category,message in messages %}
                     {% if category != 'error' %}
                         <span class='{{category}}' style="font-size: 14pt">{{message}}</span>
@@ -37,8 +37,21 @@
             <h2>Provide the formula for: <span style="color:blue">{{name}}</span></h2></br>
             {% with messages = get_flashed_messages(with_categories=True) %} 
             <form action="/allnaming" method="post">
-                <label for "answer" style="font-size: 16pt; color:blue">Formula: </label>
-                <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "15"></br>
+                <div class="row justify-content-center" style="font-size:1.75vw">
+                    <div class="col-1 wrapper text-right no-gutters">
+                        <label for "answer" style="color:blue">Formula:</label>
+                    </div>
+                    <div class="col-2 wrapper text-center">
+                        <input onkeyup="display(this)" name="answer" type="text" value="{{answer}}" size = "12"></br>
+                    </div>
+                    <div class="col-1 wrapper text-left">
+                        {% if correct %}
+                            <label for "answer" style="color:brown" id="dynamicFormula">{% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</label>
+                        {% else %}
+                            <label for "answer" style="color:brown" id="dynamicFormula"></label>
+                        {% endif %}
+                    </div>
+                </div>
                 {% for category,message in messages %}
                     {% if category != 'error' %}
                         <span class='{{category}}' style="font-size: 14pt">{{message}}</span>
@@ -58,6 +71,23 @@
                 <input name="formula" type="hidden" value="{{formula}}">
                 <input name="question" type="hidden" value="{{question}}">
                 <input name="firstAttempt" type="hidden" value="{{firstAttempt}}">
+                <script>
+                    function display(entry)
+                    {
+                        var k=entry.value;
+                        var result = '';
+                        digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+                        for (char in k){
+                            if (k[char] in digits){
+                                result += k[char].sub();
+                            }
+                            else{
+                                result += k[char];
+                            }
+                        }
+                        document.getElementById("dynamicFormula").innerHTML = result;
+                    }
+                </script>
             </form>
             {% endwith %}
         {% endif %}
