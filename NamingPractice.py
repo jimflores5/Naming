@@ -490,23 +490,5 @@ def ffmtutorial(type):
 
     return render_template('ffmtutorial.html',title="Formulas from Names", page = page, practiceList = practiceList, digits = digits, answers = answers, numCorrect = numCorrect, correct = correct)
 
-@app.route('/temp',methods=['POST', 'GET'])
-def temp():
-    if request.method == 'POST':
-        answer = request.form['answer']
-        name = request.form['name']
-        formula = request.form['formula']
-        if answer == formula:
-            flash('Correct!  :-)', 'correct')
-            correctAns = True
-        else:
-            flash('Try again, or click here to reveal the answer.', 'error')
-            correctAns = False
-
-        return render_template('temp.html', title="Formulas from Names", name = name, formula = formula, answer = answer, digits = digits, correctAns = correctAns)
-
-    Compound = chooseCompound()
-    return render_template('temp.html',title="Formulas from Names", name = Compound[0], formula = Compound[1], digits = digits, correctAns = False)
-
 if __name__ == '__main__':
     app.run()
