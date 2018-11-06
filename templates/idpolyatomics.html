@@ -64,7 +64,7 @@
                                 <ul type="a" class="wrapper text-left mt-3" style="font-size: 1.75vw">
                                     {% for item in range(4) %}
                                     <li style="color:blue">
-                                        <label for "answer{{item}}"><span>
+                                        <label for="answer{{item}}"><span>
                                             {% for char in practiceList[item][1] %}{% if char in digits %}<sub>{{char}}</sub>{% else %}{{char}}{% endif %}{% endfor %}
                                             </span>= </label>
                                         <input type="radio" name="answer{{item}}" value="monatomic" required {% if answers[item] == 'monatomic' %} checked {% endif %}> <span style="font-size: 1.5vw; color:black">Monatomic</span>

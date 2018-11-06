@@ -181,10 +181,10 @@
                                 <ul type="a" class="wrapper text-left mt-3" style="font-size: 1.75vw">
                                     {% for item in range(4) %}
                                     <li style="color:blue">
-                                        <label for "answer{{item}}"><span>
+                                        <label for="answer{{item}}"><span>
                                             {% for char in practiceList[item][1] %}{% if char in digits %}<sub>{{char}}</sub>{% else %}{{char}}{% endif %}{% endfor %}
                                             </span>= </label>
-                                        <input name="answer{{item}}" type="text" value="{{answers[item]}}" size="28"></br>
+                                        <input name="answer{{item}}" type="text" value="{{answers[item]}}" size="28"><br/>
                                     </li>
                                     {% if messages %}
                                         {% set message = messages[item] %}                                        

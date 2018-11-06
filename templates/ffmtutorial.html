@@ -28,7 +28,7 @@
                                 <li style="color:blue">
                                     <div class="row" {% if page == 1 %}style="font-size:1.5vw"{% else %}style="font-size:1.6vw"{% endif %}>
                                         <div class="col-5 wrapper text-right">
-                                            <label for "answer{{item}}"><span>
+                                            <label for="answer{{item}}"><span>
                                                 {{practiceList[item][0]}}
                                                 </span>=</label>
                                         </div>
@@ -37,9 +37,9 @@
                                         </div>
                                         <div class="col-1 wrapper text-left">
                                             {% if correct[item] %}
-                                                <label for "answer{{item}}" style="color:brown" id="dynamicFormula{{item}}">{% for item in practiceList[item][1] %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</label>
+                                                <label for="answer{{item}}" style="color:brown" id="dynamicFormula{{item}}">{% for item in practiceList[item][1] %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</label>
                                             {% else %}
-                                                <label for "answer{{item}}" style="color:brown" id="dynamicFormula{{item}}"></label>
+                                                <label for="answer{{item}}" style="color:brown" id="dynamicFormula{{item}}"></label>
                                             {% endif %}
                                         </div>
                                     </div>

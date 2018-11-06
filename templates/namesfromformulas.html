@@ -6,10 +6,10 @@
         <br/>
         <h2>Provide the name for: <span style="color:blue">
             {% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}
-            </span></h2></br>
+            </span></h2><br/>
         {% with messages = get_flashed_messages(with_categories=True) %} 
         <form action="/namesfromformulas/{{type}}" method="post">
-            <label for "answer" style="font-size: 16pt; color:blue">Name: </label>
+            <label for="answer" style="font-size: 16pt; color:blue">Name: </label>
             <input name="answer" type="text" value="{{answer}}" style="font-size: 16pt" size = "28"></br>
             {% for category,message in messages %}
                 {% if category != 'error' %}
@@ -25,7 +25,7 @@
                     </div>
                 {% endif %}
             {% endfor %}
-            </br>
+            <br/>
             <input name="name" type="hidden" value="{{name}}">
             <input name="formula" type="hidden" value="{{formula}}">
             <input name="firstAttempt" type="hidden" value="{{firstAttempt}}">
