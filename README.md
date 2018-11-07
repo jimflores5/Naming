@@ -6,7 +6,7 @@
  - An "infinite practice" mode provides immediate feedback as students respond to randomly generated name and formula questions.
  
 ### Features
- - Interactive tutorials (dynaminc notes, short video clips and guided practice problems) help introduce students to the new skills.
+ - Interactive tutorials introduce students to the new skills.
  - "Infinite practice" options provide immediate feedback to help students master the new skills.
  
 ### Technologies
