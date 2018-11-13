@@ -4,21 +4,21 @@
     <div class='wrapper text-center'>
         <h1><u>Formulas from Names</u></h1>
         <br/>
-        <h2>Provide the formula for: <span style="color:blue">{{name}}</span></h2></br>
+        <h2>Provide the formula for: <span style="color:blue">{{name}}</span></h2><br/>
         {% with messages = get_flashed_messages(with_categories=True) %} 
             <form action="/formulasfromnames/{{type}}" method="post">
                 <div class="row justify-content-center" style="font-size:1.75vw">
                     <div class="col-1 wrapper text-right no-gutters">
-                        <label for "answer" style="color:blue">Formula:</label>
+                        <label for="answer" style="color:blue">Formula:</label>
                     </div>
                     <div class="col-2 wrapper text-center">
-                        <input onkeyup="display(this)" name="answer" type="text" value="{{answer}}" size = "10"></br>
+                        <input onkeyup="display(this)" name="answer" type="text" value="{{answer}}" size = "10"><br/>
                     </div>
                     <div class="col-1 wrapper text-left">
                         {% if correct %}
-                            <label for "answer" style="color:brown" id="dynamicFormula">{% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</label>
+                            <label for="answer" style="color:brown" id="dynamicFormula">{% for item in formula %}{% if item in digits %}<sub>{{item}}</sub>{% else %}{{item}}{% endif %}{% endfor %}</label>
                         {% else %}
-                            <label for "answer" style="color:brown" id="dynamicFormula"></label>
+                            <label for="answer" style="color:brown" id="dynamicFormula"></label>
                         {% endif %}
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-                </br>
+                <br/>
                 <input name="name" type="hidden" value="{{name}}">
                 <input name="formula" type="hidden" value="{{formula}}">
                 <input name="firstAttempt" type="hidden" value="{{firstAttempt}}">
