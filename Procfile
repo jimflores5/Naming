@@ -1,1 +1,1 @@
-web: gunicorn NamingPractice:app
+web: gunicorn NamingPractice.py:app
