@@ -148,14 +148,14 @@ def namesfromformulas(type):
             flash('Try again, or click here to reveal the answer.', 'error')
 
         ratioCorrect = round(Decimal(nameCorrect/nameAttempts*100),1)
-        return render_template('namesfromformulas.html', title="Names fron Formulas", name = name, formula = formula, answer = answer, digits = digits, type = type, nameAttempts = nameAttempts, nameCorrect = nameCorrect, firstAttempt = False, ratioCorrect = ratioCorrect)
+        return render_template('namesfromformulas.html', title="Names from Formulas", name = name, formula = formula, answer = answer, digits = digits, type = type, nameAttempts = nameAttempts, nameCorrect = nameCorrect, firstAttempt = False, ratioCorrect = ratioCorrect)
     
     nameAttempts = session.get('nameAttempts', None) + 1
     nameCorrect = session.get('nameCorrect', None)
     session['nameAttempts'] = nameAttempts
     ratioCorrect = round(Decimal(nameCorrect/nameAttempts*100),1)
     Compound = chooseCompound(type)
-    return render_template('namesfromformulas.html',title="Names fron Formulas", name = Compound[0], formula = Compound[1], digits = digits, type = type, nameAttempts = nameAttempts, nameCorrect = nameCorrect, firstAttempt = True, ratioCorrect = ratioCorrect)
+    return render_template('namesfromformulas.html',title="Names from Formulas", name = Compound[0], formula = Compound[1], digits = digits, type = type, nameAttempts = nameAttempts, nameCorrect = nameCorrect, firstAttempt = True, ratioCorrect = ratioCorrect)
 
 @app.route('/formulasfromnames/<type>',methods=['POST', 'GET'])
 def formulasfromnames(type):
