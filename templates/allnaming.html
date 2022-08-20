@@ -10,7 +10,7 @@
                 </span></h2></br>
             {% with messages = get_flashed_messages(with_categories=True) %} 
             <form action="/allnaming" method="post">
-                <label for "answer" style="font-size:1.75vw; color:blue">Name: </label>
+                <label for="answer" style="font-size:1.75vw; color:blue">Name: </label>
                 <input name="answer" type="text" value="{{answer}}" style="font-size:1.75vw" size = "28"></br>
                 {% for category,message in messages %}
                     {% if category != 'error' %}
