@@ -4,7 +4,7 @@ astroid>=2.12.2
 certifi==2018.8.24
 cffi>=1.12
 Click>=7.1.2
-cryptography==3.3.2
+cryptography==39.0.1
 Flask==2.0.1
 Flask-Migrate==2.2.1
 Flask-SQLAlchemy>=2.3.2
