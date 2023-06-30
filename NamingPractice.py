@@ -94,7 +94,7 @@ def checkName(answer,name):
             else:
                 result = False
     else:
-        if 'bicarbonate' in answer.lower() or 'bisulfate' in answer.lower():    #Correct for alterante names for HCO3- and HSO4-.
+        if 'bicarbonate' in answer.lower() or 'bisulfate' in answer.lower():    #Correct for alternate names for HCO3- and HSO4-.
             answer = answer.lower()
             answer = answer.replace('bi','hydrogen ')
         answer = answer.replace(' ','')
