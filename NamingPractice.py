@@ -166,7 +166,7 @@ def formulasfromnames(type):
         answer = request.form['answer']
         name = request.form['name']
         formula = request.form['formula']
-        if answer == formula:
+        if answer.strip() == formula:
             flash('Correct!  :-)', 'correct')
             correct = True
             if firstAttempt == 'True':
@@ -204,7 +204,7 @@ def allnaming():
             if firstAttempt == 'True':
                 nameCorrect += 1
                 session['nameCorrect'] = nameCorrect
-        elif question == '1' and answer == formula:
+        elif question == '1' and answer.strip() == formula:
             flash('Correct!  :-)', 'correct')
             correct = True
             if firstAttempt == 'True':
