@@ -33,6 +33,7 @@
         "decoxide",
         "Dichlorine",
         "dihydrogen",
+        "Diphosphorus",
         "formulasfromnames",
         "hexachloride",
         "hexahydride",
@@ -46,12 +47,14 @@
         "Pentene",
         "pentoxide",
         "Pentyne",
+        "phosphite",
         "Propyne",
         "tetrabromide",
         "Tetracarbon",
         "tetrahydride",
         "tetraoxide",
         "Tetraphosphorous",
+        "Tetraphosphorus",
         "trifluoride"
     ]
 }
